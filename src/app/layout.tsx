@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import SideMenu from "./components/side-menu";
+import TopBar from "./components/top-bar";
 
-const inter = Inter({ subsets: ["latin"] });
+const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Payroll Management",
@@ -19,9 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <UserProvider>
-        <body className={inter.className}>
-          <SideMenu></SideMenu>
-          {children}
+        <body className={montserrat.className}>
+          <main className="flex h-screen p-2">
+            <SideMenu></SideMenu>
+            <div className="flex flex-col w-full divide-y divide-slate-300">
+              <TopBar></TopBar>
+              {children}
+            </div>
+          </main>
         </body>
       </UserProvider>
     </html>

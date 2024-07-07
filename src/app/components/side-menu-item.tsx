@@ -9,6 +9,8 @@ export default function SideMenuItem(props: SideMenuItemProps) {
     const {route, label} = props;
     
     return (
-        <div><Link href={route}>{label}</Link></div>
+        <div className="p-2 text-center">
+            <Link href={route}>{label}</Link>
+        </div>
     );
 }
