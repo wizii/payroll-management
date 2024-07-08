@@ -3,7 +3,10 @@
 import { useEffect, useState } from "react";
 import AddEmployeeModal from "../components/add-employee-modal";
 import { useEmployees } from "../context/employeesContext";
+import Table from "../components/table/table";
 
+// TODO: Joining Date Format
+// TODO: Scrollable-table
 export default function Employees() {
     const headers = ['Staff Id', 'Name', 'Joining Date', 'Basic Salary', 'Salary Allowances'];
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,7 +30,7 @@ export default function Employees() {
           } catch (error) {
             // setError(error);
             // setLoading(false);
-            console.log('error occured')
+            console.log('error ocurred')
           }
         }
     
@@ -66,7 +69,7 @@ export default function Employees() {
             <div className="flex justify-end text-[#ff220f]">
                 <button onClick={() => setIsModalOpen(true)}> + Add Employee</button>
             </div>
-            <div className='grid grid-cols-6 p-6 bg-[#f1f7ff]/50 text-gray-500 justify-items-center'>
+            {/* <div className='grid grid-cols-6 p-6 bg-[#f1f7ff]/50 text-gray-500 justify-items-center'>
                 {headers.map((header, index) => 
                     <div key={index}>{header}</div>
                 )}
@@ -85,7 +88,8 @@ export default function Employees() {
                             <button onClick={() => deleteEmployee(employee.staffId)} className="underline">Delete</button>
                         </div>
                     </div>
-            )})}
+            )})} */}
+            <Table headers={headers} content={employees} rowHeader={'staffId'}></Table>
             {isModalOpen &&
                 <AddEmployeeModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} addEmployee={addEmployee}></AddEmployeeModal>
             }

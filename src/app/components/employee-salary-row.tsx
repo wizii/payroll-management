@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Employee } from "../types";
-import RowItem from "./row-item";
+import RowItem from "./table/row-item";
 
 type EmployeeSalaryRowProps = {
     employee: Employee;
