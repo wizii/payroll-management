@@ -37,7 +37,7 @@ export default function Employees() {
     async function addEmployee(formData: FormData) {
         let employeeData = {
             staffId: formData.get('staff-id'),
-            employeeName: formData.get('employee-name'),
+            name: formData.get('employee-name'),
             joiningDate: formData.get('joining-date'),
             basicSalary: formData.get('basic-salary'),
             salaryAllowances: formData.get('salary-allowances')
