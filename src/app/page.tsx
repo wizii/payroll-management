@@ -1,6 +1,7 @@
-// TODO: Create default home page
-export default function Home() {
+export default function Dashboard() {
   return (
-    <div>Home Page</div>
+      <div>
+        <h1>Dashboard</h1>
+      </div>
   );
-}
+};

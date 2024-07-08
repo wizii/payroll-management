@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 import AddEmployeeModal from "../components/add-employee-modal";
+import { useEmployees } from "../context/employeesContext";
 
 export default function Employees() {
     const headers = ['Staff Id', 'Name', 'Joining Date', 'Basic Salary', 'Salary Allowances'];
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [employees, setEmployees] = useState([]);
+    const { employees, setEmployees } = useEmployees();
     const [employeeCount, setEmployeeCount] = useState(employees.length);
 
     // TODO: dependency array
@@ -22,7 +23,7 @@ export default function Employees() {
             
             setEmployees(data.employees);
             // setLoading(false);
-            // console.log(employees)
+            console.log(employees)
           } catch (error) {
             // setError(error);
             // setLoading(false);
@@ -46,6 +47,7 @@ export default function Employees() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(employeeData)
           });
+        //   console.log(response)
         setIsModalOpen(false);
         if(response.status == 201) {
             setEmployeeCount(employeeCount + 1);
@@ -73,14 +75,14 @@ export default function Employees() {
                     console.log('employee', employee)
                     return (
                     <div key={index} className="grid grid-cols-6 justify-items-center p-6">
-                        <div>{employee.staffid}</div>
+                        <div>{employee.staffId}</div>
                         <div>{employee.name}</div>
-                        <div>{employee.joiningdate}</div>
-                        <div>{employee.basicsalary}</div>
-                        <div>{employee.salaryallowances}</div>
+                        <div>{employee.joiningDate}</div>
+                        <div>{employee.basicSalary}</div>
+                        <div>{employee.salaryAllowances}</div>
                         <div className="flex justify-around w-full">
                             <button className="underline">Edit</button>
-                            <button onClick={() => deleteEmployee(employee.staffid)} className="underline">Delete</button>
+                            <button onClick={() => deleteEmployee(employee.staffId)} className="underline">Delete</button>
                         </div>
                     </div>
             )})}
