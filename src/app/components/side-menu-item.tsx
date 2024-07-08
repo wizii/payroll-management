@@ -5,6 +5,7 @@ type SideMenuItemProps = {
     route: string;
 }
 
+// TODO: icons
 export default function SideMenuItem(props: SideMenuItemProps) {
     const {route, label} = props;
     
