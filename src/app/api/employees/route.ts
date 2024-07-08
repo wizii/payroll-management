@@ -1,18 +1,18 @@
-import { sql } from "@vercel/postgres";
+import { QueryResultRow, sql } from "@vercel/postgres";
 // TODO: Add try/catch
 export async function GET() {
     const { rows } = await sql`SELECT * FROM Employee;`;
-
-    return Response.json({ employees: rows })
+    const serializedEmployees = serializeEmployees(rows);
+    return Response.json({ employees: serializedEmployees })
   }
 
 export async function POST(request: Request) {
     try {
-        const { staffId, employeeName, joiningDate, basicSalary, salaryAllowances } = await request.json();
+        const { staffId, name, joiningDate, basicSalary, salaryAllowances } = await request.json();
         
         await sql`
         INSERT INTO Employee (staffid, name, joiningdate, basicsalary, salaryallowances)
-        VALUES (${staffId}, ${employeeName}, ${joiningDate}, ${basicSalary}, ${salaryAllowances})
+        VALUES (${staffId}, ${name}, ${joiningDate}, ${basicSalary}, ${salaryAllowances})
         `;
         
         return new Response(JSON.stringify({ message: 'Employee added successfully' }), {
@@ -26,4 +26,14 @@ export async function POST(request: Request) {
             status: 500
         });
     }
+}
+
+function serializeEmployees(rows: QueryResultRow[]) {
+    return rows.map(row => ({
+        staffId: row.staffid,
+        name: row.name,
+        joiningDate: row.joiningdate,
+        basicSalary: row.basicsalary,
+        salaryAllowances: row.salaryallowances
+    }));
 }

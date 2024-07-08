@@ -3,5 +3,5 @@ export type Employee = {
     name: string;
     joiningDate: date;
     basicSalary: number;
-    salaryAllowance: number;
+    salaryAllowances: number;
 }
