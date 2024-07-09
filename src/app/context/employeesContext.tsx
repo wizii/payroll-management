@@ -6,6 +6,8 @@ import type { Employee } from '../types';
 type EmployeeContextType = {
   employees: Employee[];
   setEmployees: Dispatch<SetStateAction<Employee[]>>;
+  selectedIds: number[];
+  setSelectedIds: Dispatch<SetStateAction<number[]>>;
 };
 
 const EmployeeContext = createContext<EmployeeContextType | undefined>(undefined);
@@ -20,9 +22,10 @@ export const useEmployees = (): EmployeeContextType => {
 
 export const EmployeeProvider = ({ children, employeesData }: { children: ReactNode, employeesData: Employee[] }) => {
   const [employees, setEmployees] = useState<Employee[]>(employeesData);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   return (
-    <EmployeeContext.Provider value={{ employees, setEmployees }}>
+    <EmployeeContext.Provider value={{ employees, setEmployees, selectedIds, setSelectedIds }}>
       {children}
     </EmployeeContext.Provider>
   );

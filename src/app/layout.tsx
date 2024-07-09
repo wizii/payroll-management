@@ -5,6 +5,7 @@ import { UserProvider } from '@auth0/nextjs-auth0/client';
 import SideMenu from "./components/side-menu";
 import TopBar from "./components/top-bar";
 import { EmployeeProvider } from './context/employeesContext';
+import { GlobalProvider } from './context/globalContext';
 import type { Employee } from './types';
 
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -33,17 +34,19 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <UserProvider>
-        <EmployeeProvider employeesData={employees}>
-        <body className={montserrat.className}>
-          <main className="flex h-screen p-2">
-            <SideMenu></SideMenu>
-            <div className="flex flex-col w-full divide-y divide-slate-300">
-              <TopBar></TopBar>
-              {children}
-            </div>
-          </main>
-        </body>
-        </EmployeeProvider>
+        <GlobalProvider>
+          <EmployeeProvider employeesData={employees}>
+          <body className={montserrat.className}>
+            <main className="flex h-screen p-2">
+              <SideMenu></SideMenu>
+              <div className="flex flex-col w-full divide-y divide-slate-300">
+                <TopBar></TopBar>
+                {children}
+              </div>
+            </main>
+          </body>
+          </EmployeeProvider>
+        </GlobalProvider>
       </UserProvider>
     </html>
   );

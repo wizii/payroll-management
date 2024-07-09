@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { toCamelCase } from "@/app/utils";
 import Row from "./row";
 import type { Employee } from "@/app/types";
+import { useEmployees } from "@/app/context/employeesContext";
 
 type TableProps = {
     headers: string[];
     editableFields: string[];
-    content: Employee[];
     rowHeader: string;
     refreshTable: () => void;
     saveChanges: (item: Employee) => void;
@@ -18,19 +18,18 @@ type TableProps = {
 // TODO: Editable Date Field should be a drop down
 // TODO: Select all
 export default function Table(props: TableProps) {
-    const { headers, content, rowHeader, editableFields, refreshTable, saveChanges, handleDelete, hasCheckBoxes } = props;
+    const { headers, rowHeader, editableFields, refreshTable, saveChanges, handleDelete, hasCheckBoxes } = props;
     const dataFields = headers.map(header => toCamelCase(header));
     const [areAllSelected, setAreAllSelected] = useState(false);
-    const [selectedIds, setSelectedIds] = useState<number[]>([]);
+    const { employees, selectedIds, setSelectedIds } = useEmployees();
+
 
     const handleSelect = (id: number, checked: boolean) => {
-      console.log('before', selectedIds)
       if(checked) {
         setSelectedIds([...selectedIds, id]);
       } else {
         setSelectedIds(selectedIds.filter(selectedId => selectedId !== id));
       }
-      console.log('after', selectedIds)
     };
     
   return (
@@ -47,14 +46,13 @@ export default function Table(props: TableProps) {
           </tr>
         </thead>
         <tbody>
-            {content.map((item: Record<string, any>, index: number) => (
+            {employees.map((item: Employee, index: number) => (
                 <Row 
                   key={index} 
                   item={item}
                   rowHeader={rowHeader}
                   dataFields={dataFields}
                   editableFields={editableFields}
-                  refreshTable={refreshTable}
                   saveChanges={saveChanges}
                   handleDelete={handleDelete}
                   hasCheckBoxes={hasCheckBoxes}

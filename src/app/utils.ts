@@ -1,3 +1,5 @@
+import { Employee } from "./types";
+
 export function toCamelCase(str: string) {
     return str
         .toLowerCase()
@@ -10,3 +12,12 @@ export function toCamelCase(str: string) {
         })
         .join('');
 }
+
+export function calculateTotalSalary(item: Employee) {
+    return (
+      Number(item.basicSalary) +
+      Number(item.salaryAllowances) +
+      Number(item.additions) -
+      Number(item.deductions)
+    );
+  };

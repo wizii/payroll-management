@@ -6,6 +6,7 @@ import { useEmployees } from "../context/employeesContext";
 import Table from "../components/table/table";
 import { Employee } from "../types";
 import Button from "../components/button";
+import { useGlobal } from "../context/globalContext";
 
 // TODO: Scrollable-table
 // TODO: Handle empty state
@@ -15,6 +16,8 @@ export default function Employees() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { employees, setEmployees } = useEmployees();
     const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const { setPageTitle } = useGlobal();
+    setPageTitle('Employees');
     
     // TODO: loading state
     useEffect(() => {

@@ -1,6 +1,7 @@
 'use client'
-
+import { useEmployees } from "@/app/context/employeesContext";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Transition } from '@headlessui/react';
+import { calculateTotalSalary } from "../utils";
 
 type SalaryProcessingModalProps = {
     isModalOpen: boolean;
@@ -12,6 +13,8 @@ type SalaryProcessingModalProps = {
 // TODO: Scrollable
 export default function SalaryProcessingModal(props: SalaryProcessingModalProps) {
     const { isModalOpen, setIsModalOpen } = props;
+    const { employees, selectedIds } = useEmployees();
+    const selectedEmployees = employees.filter(({staffId}) => selectedIds.includes(staffId));
 
     return (
         <Transition show={isModalOpen}>
@@ -37,38 +40,31 @@ export default function SalaryProcessingModal(props: SalaryProcessingModalProps)
                                                 <div className="mt-2 col-span-5 text-sm font-semibold text-gray-500 mb-4">
                                                     * Employees without a salary month/year will not be processed
                                                 </div>
-                                                <div>
-                                                    <label htmlFor="staff-id" className="text-sm font-medium leading-6 text-gray-900">
-                                                        Staff Id
-                                                    </label>
-                                                    <div className="mt-2">
-                                                        id
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <label htmlFor="employee-name" className="text-sm font-medium leading-6 text-gray-900">
-                                                        Name
-                                                    </label>
-                                                    <div className="mt-2">
-                                                        name
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <label htmlFor="basic-salary" className="text-sm font-medium leading-6 text-gray-900">
-                                                        Total Salary
-                                                    </label>
-                                                    <div className="mt-2">
-                                                        Total Salary
-                                                    </div>
-                                                </div>
-                                                <div className="col-span-2">
-                                                    <label htmlFor="salary-month-year" className="text-sm font-medium leading-6 text-gray-900">
-                                                        Salary Month/Year
-                                                    </label>
-                                                    <div className="mt-2">
-                                                        Material UI Date Picker
-                                                    </div>
-                                                </div>
+                                                <div className="font-semibold text-sm">Staff Id</div>
+                                                <div className="font-semibold text-sm">Name</div>
+                                                <div className="font-semibold text-sm">Total Salary</div>
+                                                <div className="font-semibold text-sm col-span-2">Salary Month/Year</div>
+
+                                                {selectedEmployees.map(employee => (
+                                                    <>
+                                                        <div className="mt-2 text-sm">
+                                                            {employee.staffId}
+                                                        </div>
+                    
+                                                        <div className="mt-2 text-sm">
+                                                            {employee.name}
+                                                        </div>
+        
+                                                        <div className="mt-2 text-sm">
+                                                            {calculateTotalSalary(employee)}
+                                                        </div>
+                
+                                                        <div className="mt-2 text-sm col-span-2">
+                                                            Material UI Date Picker
+                                                        </div>
+                                                    </>
+                                                ))}
+                            
                                             </div>
                                         </div>
                                     </div> 

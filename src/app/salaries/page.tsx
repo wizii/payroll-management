@@ -5,18 +5,19 @@ import { useEmployees } from "../context/employeesContext";
 import { Employee } from "../types";
 import Button from "../components/button";
 import SalaryProcessingModal from "../components/salary-processing-modal";
+import { useGlobal } from "../context/globalContext";
 
 // TODO: Add salary currency
 // TODO: Add payment status?
-// TODO: Add checkboxes for salary rows
-// TODO: Create processing modal
 // TODO: Don't save if no changes
 export default function Salaries() {
     const headers=['Staff Id', 'Name', 'Basic Salary', 'Salary Allowances', 'Additions', 'Deductions', 'Total Salary'];
     const editableFields = ['additions', 'deductions'];
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { employees, setEmployees } = useEmployees();
+    const { setEmployees, selectedIds } = useEmployees();
+    const { setPageTitle } = useGlobal();
+    setPageTitle('Salaries')
 
     useEffect(() => {
         async function fetchEmployees() {
@@ -57,7 +58,8 @@ export default function Salaries() {
       }
 
       function handleSalaryProcessing(formData: FormData) {
-        console.log('handling processing for employees with these ids');
+        console.log('handling processing for employees with these ids', selectedIds);
+        setIsModalOpen(false);
       }
 
 
@@ -68,12 +70,11 @@ export default function Salaries() {
         <div className="flex-1">
           <Table 
             headers={headers}
-            content={employees} 
             rowHeader={'staffId'}
             editableFields={editableFields}
             refreshTable={refreshTable}
             saveChanges={saveChanges} 
-            hasCheckBoxes={true}          
+            hasCheckBoxes={true}     
           />
         </div> 
       </div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import RowItem from "./row-item";
 import { Employee } from "@/app/types";
+import { calculateTotalSalary } from "@/app/utils";
 
 type RowProps = {
     rowHeader: string;
@@ -11,20 +12,11 @@ type RowProps = {
     handleDelete?: (id: string) => void;
     hasCheckBoxes?: boolean;
     handleSelect: (id: number, checked: boolean) => void;
-    checked: boolean;
 }
 
 export default function Row(props: RowProps) {
-    const { rowHeader, item, dataFields, editableFields, saveChanges, handleDelete, hasCheckBoxes, handleSelect, checked } = props;
+    const { rowHeader, item, dataFields, editableFields, saveChanges, handleDelete, hasCheckBoxes, handleSelect } = props;
     const [isEditing, setIsEditing]= useState(false);
-    const calculateTotalSalary = (item: Employee) => {
-        return (
-          Number(item.basicSalary) +
-          Number(item.salaryAllowances) +
-          Number(item.additions) -
-          Number(item.deductions)
-        );
-      };
     const initialTotalSalary = calculateTotalSalary(item);
     const [rowItem, setRowItem] = useState({...item, totalSalary: initialTotalSalary });
 
