@@ -3,13 +3,19 @@ import { useState, useEffect } from "react";
 import Table from "../components/table/table";
 import { useEmployees } from "../context/employeesContext";
 import { Employee } from "../types";
+import Button from "../components/button";
+import SalaryProcessingModal from "../components/salary-processing-modal";
 
 // TODO: Add salary currency
 // TODO: Add payment status?
+// TODO: Add checkboxes for salary rows
+// TODO: Create processing modal
+// TODO: Don't save if no changes
 export default function Salaries() {
-    const headers=['Staff Id', 'Name', 'Basic Salary', 'Salary Allowances', 'Additions', 'Deductions', 'Total Salary', ''];
+    const headers=['Staff Id', 'Name', 'Basic Salary', 'Salary Allowances', 'Additions', 'Deductions', 'Total Salary'];
     const editableFields = ['additions', 'deductions'];
     const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const { employees, setEmployees } = useEmployees();
 
     useEffect(() => {
@@ -50,7 +56,26 @@ export default function Salaries() {
         setRefreshTrigger(refreshTrigger + 1);
       }
 
+      function handleSalaryProcessing(formData: FormData) {
+        console.log('handling processing for employees with these ids');
+      }
+
+
     return (
-        <Table headers={headers} content={employees} rowHeader={'staffId'} editableFields={editableFields} refreshTable={refreshTable} saveChanges={saveChanges}></Table>
+      <div className="flex flex-col p-4 h-full">
+        <SalaryProcessingModal handleSalaryProcessing={handleSalaryProcessing} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+        <Button label='Process Salaries' onClick={() => setIsModalOpen(true)}/>
+        <div className="flex-1">
+          <Table 
+            headers={headers}
+            content={employees} 
+            rowHeader={'staffId'}
+            editableFields={editableFields}
+            refreshTable={refreshTable}
+            saveChanges={saveChanges} 
+            hasCheckBoxes={true}          
+          />
+        </div> 
+      </div>
     )
 }

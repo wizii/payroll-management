@@ -6,6 +6,7 @@ type SideMenuItemProps = {
 }
 
 // TODO: icons
+// TODO: selected state - red
 export default function SideMenuItem(props: SideMenuItemProps) {
     const {route, label} = props;
     

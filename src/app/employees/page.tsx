@@ -5,6 +5,7 @@ import AddEmployeeModal from "../components/add-employee-modal";
 import { useEmployees } from "../context/employeesContext";
 import Table from "../components/table/table";
 import { Employee } from "../types";
+import Button from "../components/button";
 
 // TODO: Scrollable-table
 // TODO: Handle empty state
@@ -84,9 +85,9 @@ export default function Employees() {
     }
     
     return (
-        <div className="flex flex-col">
+          <div className="flex flex-col p-4 h-full">
             <div className="flex justify-end text-[#ff220f]">
-                <button onClick={() => setIsModalOpen(true)}> + Add Employee</button>
+              <Button onClick={() => setIsModalOpen(true)} label='Add Employee'/>
             </div>
             <Table 
               headers={headers}
@@ -95,7 +96,6 @@ export default function Employees() {
               editableFields={editableFields}
               refreshTable={refreshTable}
               saveChanges={saveChanges}
-              canDelete={true}
               handleDelete={deleteEmployee}
             />
             {isModalOpen &&

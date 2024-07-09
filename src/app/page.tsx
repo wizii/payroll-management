@@ -1,4 +1,5 @@
-// TODO: Dashboard
+// TODO: Switch to redux?
+// TODO: Dashboard / Payment Log
 // TODO: Check responsiveness
 export default function Dashboard() {
   return (

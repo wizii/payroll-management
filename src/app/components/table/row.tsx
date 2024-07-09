@@ -8,12 +8,14 @@ type RowProps = {
     item: Employee;
     editableFields: string[];
     saveChanges: (item: Employee) => void;
-    canDelete?: boolean;
     handleDelete?: (id: string) => void;
+    hasCheckBoxes?: boolean;
+    handleSelect: (id: number, checked: boolean) => void;
+    checked: boolean;
 }
 
 export default function Row(props: RowProps) {
-    const { rowHeader, item, dataFields, editableFields, saveChanges, canDelete, handleDelete } = props;
+    const { rowHeader, item, dataFields, editableFields, saveChanges, handleDelete, hasCheckBoxes, handleSelect, checked } = props;
     const [isEditing, setIsEditing]= useState(false);
     const calculateTotalSalary = (item: Employee) => {
         return (
@@ -34,10 +36,21 @@ export default function Row(props: RowProps) {
             [name]: value
         }
         setRowItem({...updatedItem, totalSalary: calculateTotalSalary(updatedItem)});
+        console.log(rowItem)
     }
 
     return(
         <tr className="bg-white border-b">
+            {hasCheckBoxes && 
+                <td className="text-center">
+                    <input 
+                        type="checkbox" 
+                        onChange={(e) => handleSelect(item.staffId, e.target.checked)}
+                        
+                    >
+                    </input>
+                </td>
+            }
             <th
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
@@ -64,7 +77,7 @@ export default function Row(props: RowProps) {
                             Edit
                         </button>
                     }
-                    {canDelete && handleDelete &&
+                    {handleDelete &&
                         <button className="ml-4 font-medium text-gray-600 underline" onClick={() => handleDelete(item.staffId)}>
                             Delete
                         </button> 
