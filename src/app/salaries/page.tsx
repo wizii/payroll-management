@@ -6,7 +6,6 @@ import { Employee } from "../types";
 
 // TODO: Add salary currency
 // TODO: Add payment status?
-// TODO: Calculate total salary
 export default function Salaries() {
     const headers=['Staff Id', 'Name', 'Basic Salary', 'Salary Allowances', 'Additions', 'Deductions', 'Total Salary', ''];
     const editableFields = ['additions', 'deductions'];

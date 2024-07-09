@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RowItem from "./row-item";
-import { useEmployees } from "@/app/context/employeesContext";
 import { Employee } from "@/app/types";
 
 type RowProps = {
@@ -15,13 +14,25 @@ type RowProps = {
 export default function Row(props: RowProps) {
     const { rowHeader, item, dataFields, editableFields, refreshTable, saveChanges } = props;
     const [isEditing, setIsEditing]= useState(false);
-    const [rowItem, setRowItem] = useState(item);
+    const calculateTotalSalary = (item: Employee) => {
+        return (
+          Number(item.basicSalary) +
+          Number(item.salaryAllowances) +
+          Number(item.additions) -
+          Number(item.deductions)
+        );
+      };
+    const initialTotalSalary = calculateTotalSalary(item);
+    const [rowItem, setRowItem] = useState({...item, totalSalary: initialTotalSalary });
+
+
 
     function handleChange(value: string, name: string) {
-        setRowItem({
+        const updatedItem = {
             ...rowItem,
             [name]: value
-        });
+        }
+        setRowItem({...updatedItem, totalSalary: calculateTotalSalary(updatedItem)});
     }
 
     return(
