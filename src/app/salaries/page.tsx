@@ -1,29 +1,56 @@
 'use client';
-
-import EmployeeSalaryRow from "../components/employee-salary-row";
+import { useState, useEffect } from "react";
+import Table from "../components/table/table";
 import { useEmployees } from "../context/employeesContext";
+import { Employee } from "../types";
 
 // TODO: Add salary currency
+// TODO: Add payment status?
 export default function Salaries() {
     const headers=['Staff Id', 'Name', 'Basic Salary', 'Salary Allowances', 'Additions', 'Deductions', 'Total Salary', ''];
-    const { employees } = useEmployees();
+    const editableFields = ['additions', 'deductions'];
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const { employees, setEmployees } = useEmployees();
 
-    function saveChanges() {
-        console.log('saving changes')
+    useEffect(() => {
+        async function fetchEmployees() {
+          try {
+            const response = await fetch('/api/employees');
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            
+            setEmployees(data.employees);
+            // setLoading(false);
+            // console.log(typeof employees[0].joiningDate)
+          } catch (error) {
+            // setError(error);
+            // setLoading(false);
+            console.log('error ocurred')
+          }
+        }
+    
+        fetchEmployees();
+      }, [refreshTrigger]);
+
+      async function saveChanges(item: Employee) {
+        console.log('salary info item', item)
+        const response = await fetch(`/api/salaries/${item.staffId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(item)
+          });
+          refreshTable();
+          console.log(response)
+          // TODO: notification if unsuccessful
     }
 
+      function refreshTable() {
+        setRefreshTrigger(refreshTrigger + 1);
+      }
+
     return (
-        <div className="flex flex-col">
-            <div className='grid grid-cols-8 p-6 bg-[#f1f7ff]/50 text-gray-500 justify-items-center'>
-                {headers.map((header, index) => 
-                    <div key={index}>{header}</div>
-                )}
-            </div>
-            <div className="grid grid-cols-8 justify-items-center p-6 gap-x-2">
-                {employees.map((employee, index) => 
-                    <EmployeeSalaryRow key={index} employee={employee} saveChanges={saveChanges}></EmployeeSalaryRow>
-                )}
-            </div>
-        </div>
+        <Table headers={headers} content={employees} rowHeader={'staffId'} editableFields={editableFields} refreshTable={refreshTable} saveChanges={saveChanges}></Table>
     )
 }

@@ -4,4 +4,6 @@ export type Employee = {
     joiningDate: date;
     basicSalary: number;
     salaryAllowances: number;
+    additions: number;
+    deductions: number;
 }

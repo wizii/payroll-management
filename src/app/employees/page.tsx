@@ -3,14 +3,18 @@
 import { useEffect, useState } from "react";
 import AddEmployeeModal from "../components/add-employee-modal";
 import { useEmployees } from "../context/employeesContext";
+import Table from "../components/table/table";
+import { Employee } from "../types";
 
+// TODO: Scrollable-table
+// TODO: Handle empty state
 export default function Employees() {
     const headers = ['Staff Id', 'Name', 'Joining Date', 'Basic Salary', 'Salary Allowances'];
+    const editableFields = ['name', 'joiningDate', 'basicSalary', 'salaryAllowances']
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { employees, setEmployees } = useEmployees();
-    const [employeeCount, setEmployeeCount] = useState(employees.length);
-
-    // TODO: dependency array
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
+    
     // TODO: loading state
     useEffect(() => {
         async function fetchEmployees() {
@@ -23,42 +27,60 @@ export default function Employees() {
             
             setEmployees(data.employees);
             // setLoading(false);
-            console.log(employees)
+            // console.log(typeof employees[0].joiningDate)
           } catch (error) {
             // setError(error);
             // setLoading(false);
-            console.log('error occured')
+            console.log('error ocurred')
           }
         }
     
         fetchEmployees();
-      }, [employeeCount]);
+      }, [refreshTrigger]);
+
+      async function saveChanges(item: Employee) {
+        const response = await fetch(`/api/employees/${item.staffId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(item)
+          });
+          refreshTable();
+          // TODO: notification if unsuccessful
+    }
+
+      function refreshTable() {
+        setRefreshTrigger(refreshTrigger + 1);
+      }
 
     async function addEmployee(formData: FormData) {
         let employeeData = {
-            staffId: formData.get('staff-id'),
             name: formData.get('employee-name'),
             joiningDate: formData.get('joining-date'),
             basicSalary: formData.get('basic-salary'),
             salaryAllowances: formData.get('salary-allowances')
         }
+    
         const response = await fetch('/api/employees', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(employeeData)
           });
-        //   console.log(response)
+    
         setIsModalOpen(false);
         if(response.status == 201) {
-            setEmployeeCount(employeeCount + 1);
+          refreshTable();
         }
-
-          console.log('add employee response', response)
-
     }
 
-    function deleteEmployee(id: string) {
-        console.log('deleting employee with id', id)
+    // TODO: Add delete warning
+    async function deleteEmployee(id: string) { 
+      const response = await fetch(`/api/employees/${id}`, {
+        method: 'DELETE'
+      });
+      if(response.status == 201) {
+        refreshTable();
+      }
+      // TODO: notification if failed
     }
     
     return (
@@ -66,30 +88,19 @@ export default function Employees() {
             <div className="flex justify-end text-[#ff220f]">
                 <button onClick={() => setIsModalOpen(true)}> + Add Employee</button>
             </div>
-            <div className='grid grid-cols-6 p-6 bg-[#f1f7ff]/50 text-gray-500 justify-items-center'>
-                {headers.map((header, index) => 
-                    <div key={index}>{header}</div>
-                )}
-            </div>
-            {employees.map((employee, index) => { 
-                    console.log('employee', employee)
-                    return (
-                    <div key={index} className="grid grid-cols-6 justify-items-center p-6">
-                        <div>{employee.staffId}</div>
-                        <div>{employee.name}</div>
-                        <div>{employee.joiningDate}</div>
-                        <div>{employee.basicSalary}</div>
-                        <div>{employee.salaryAllowances}</div>
-                        <div className="flex justify-around w-full">
-                            <button className="underline">Edit</button>
-                            <button onClick={() => deleteEmployee(employee.staffId)} className="underline">Delete</button>
-                        </div>
-                    </div>
-            )})}
+            <Table 
+              headers={headers}
+              content={employees}
+              rowHeader={'staffId'}
+              editableFields={editableFields}
+              refreshTable={refreshTable}
+              saveChanges={saveChanges}
+              canDelete={true}
+              handleDelete={deleteEmployee}
+            />
             {isModalOpen &&
                 <AddEmployeeModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} addEmployee={addEmployee}></AddEmployeeModal>
             }
-            
         </div>
     )
 }
