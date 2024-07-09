@@ -7,8 +7,6 @@ import Table from "../components/table/table";
 import { Employee } from "../types";
 
 // TODO: Scrollable-table
-// TODO: Delete employee
-// Make staff id auto generated?
 // TODO: Handle empty state
 export default function Employees() {
     const headers = ['Staff Id', 'Name', 'Joining Date', 'Basic Salary', 'Salary Allowances'];
@@ -74,8 +72,15 @@ export default function Employees() {
         }
     }
 
-    function deleteEmployee(id: string) {
-        console.log('deleting employee with id', id)
+    // TODO: Add delete warning
+    async function deleteEmployee(id: string) { 
+      const response = await fetch(`/api/employees/${id}`, {
+        method: 'DELETE'
+      });
+      if(response.status == 201) {
+        refreshTable();
+      }
+      // TODO: notification if failed
     }
     
     return (
@@ -83,7 +88,16 @@ export default function Employees() {
             <div className="flex justify-end text-[#ff220f]">
                 <button onClick={() => setIsModalOpen(true)}> + Add Employee</button>
             </div>
-            <Table headers={headers} content={employees} rowHeader={'staffId'} editableFields={editableFields} refreshTable={refreshTable} saveChanges={saveChanges}></Table>
+            <Table 
+              headers={headers}
+              content={employees}
+              rowHeader={'staffId'}
+              editableFields={editableFields}
+              refreshTable={refreshTable}
+              saveChanges={saveChanges}
+              canDelete={true}
+              handleDelete={deleteEmployee}
+            />
             {isModalOpen &&
                 <AddEmployeeModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} addEmployee={addEmployee}></AddEmployeeModal>
             }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import RowItem from "./row-item";
 import { Employee } from "@/app/types";
 
@@ -7,12 +7,13 @@ type RowProps = {
     dataFields: string[];
     item: Employee;
     editableFields: string[];
-    refreshTable: () => void;
     saveChanges: (item: Employee) => void;
+    canDelete?: boolean;
+    handleDelete?: (id: string) => void;
 }
 
 export default function Row(props: RowProps) {
-    const { rowHeader, item, dataFields, editableFields, refreshTable, saveChanges } = props;
+    const { rowHeader, item, dataFields, editableFields, saveChanges, canDelete, handleDelete } = props;
     const [isEditing, setIsEditing]= useState(false);
     const calculateTotalSalary = (item: Employee) => {
         return (
@@ -63,7 +64,11 @@ export default function Row(props: RowProps) {
                             Edit
                         </button>
                     }
-                    
+                    {canDelete && handleDelete &&
+                        <button className="ml-4 font-medium text-gray-600 underline" onClick={() => handleDelete(item.staffId)}>
+                            Delete
+                        </button> 
+                    }
                 </td>
         </tr>
     )

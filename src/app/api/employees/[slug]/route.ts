@@ -23,4 +23,28 @@ export async function PUT(
             status: 500
         });
     }
-  }
+}
+
+export async function DELETE (
+    request: Request,
+    { params }: { params: { slug: string } }
+) {
+    try {
+        const slug = params.slug;
+        // Delete employee row and salaryinfo row (foreign key on delete cascade)
+        await sql`
+            DELETE FROM Employee 
+            WHERE staffid = ${slug}
+        `;
+        return new Response(JSON.stringify({ message: 'Employee deleted successfully' }), {
+            headers: { 'Content-Type': 'application/json' },
+            status: 201
+        });
+    } catch (error) {
+        console.error('Error deleting employee:', error);
+        return new Response(JSON.stringify({ error: 'Internal Server Error' }), {
+            headers: { 'Content-Type': 'application/json' },
+            status: 500
+        });
+    }   
+}

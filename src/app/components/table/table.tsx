@@ -9,13 +9,14 @@ type TableProps = {
     rowHeader: string;
     refreshTable: () => void;
     saveChanges: (item: Employee) => void;
+    canDelete?: boolean;
+    handleDelete?: (id: string) => void;
 };
 
 // TODO: Fix header gap
-// TODO: Action buttons
 // TODO: Editable Date Field should be a drop down
 export default function Table(props: TableProps) {
-    const { headers, content, rowHeader, editableFields, refreshTable, saveChanges } = props;
+    const { headers, content, rowHeader, editableFields, refreshTable, saveChanges, canDelete, handleDelete } = props;
     const dataFields = headers.map(header => toCamelCase(header));
     
   return (
@@ -28,7 +29,17 @@ export default function Table(props: TableProps) {
         </thead>
         <tbody>
             {content.map((item: Record<string, any>, index: number) => (
-                <Row key={index} item={item} rowHeader={rowHeader} dataFields={dataFields} editableFields={editableFields} refreshTable={refreshTable} saveChanges={saveChanges}></Row>
+                <Row 
+                  key={index} 
+                  item={item}
+                  rowHeader={rowHeader}
+                  dataFields={dataFields}
+                  editableFields={editableFields}
+                  refreshTable={refreshTable}
+                  saveChanges={saveChanges}
+                  canDelete={canDelete}
+                  handleDelete={handleDelete}
+                />
             ))}
         </tbody>
       </table>
