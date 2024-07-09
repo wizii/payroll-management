@@ -1,12 +1,23 @@
+import { toCamelCase } from "@/app/utils";
+import Row from "./row";
+import type { Employee } from "@/app/types";
+
 type TableProps = {
     headers: string[];
-    content: Record<string, any>;
+    editableFields: string[];
+    content: Employee[];
     rowHeader: string;
+    refreshTable: () => void;
+    saveChanges: (item: Employee) => void;
 };
 
 // TODO: Fix header gap
+// TODO: Action buttons
+// TODO: Editable Date Field should be a drop down
 export default function Table(props: TableProps) {
-    const { headers, content, rowHeader } = props;
+    const { headers, content, rowHeader, editableFields, refreshTable, saveChanges } = props;
+    const dataFields = headers.map(header => toCamelCase(header));
+    
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -17,20 +28,7 @@ export default function Table(props: TableProps) {
         </thead>
         <tbody>
             {content.map((item: Record<string, any>, index: number) => (
-                <tr key={index} className="bg-white border-b">
-                    <th
-                        scope="row"
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                    >
-                        {item[rowHeader]}
-                    </th>
-                    {Object.keys(item).filter(key => key !== rowHeader).map((prop, index) => <td key={index} className="px-6 py-4">{item[prop]}</td>)}
-                    <td className="px-6 py-4 text-right">
-                        <button className="font-medium text-gray-600 underline">
-                            Edit
-                        </button>
-                    </td>
-                </tr>
+                <Row key={index} item={item} rowHeader={rowHeader} dataFields={dataFields} editableFields={editableFields} refreshTable={refreshTable} saveChanges={saveChanges}></Row>
             ))}
         </tbody>
       </table>

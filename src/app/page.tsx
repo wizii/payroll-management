@@ -1,3 +1,5 @@
+// TODO: Dashboard
+// TODO: Check responsiveness
 export default function Dashboard() {
   return (
       <div>
