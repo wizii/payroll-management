@@ -33,7 +33,7 @@ export default async function RootLayout({
   const { employees } = await getEmployees();
   return (
     <html lang="en">
-      <UserProvider>
+      <UserProvider> 
         <GlobalProvider>
           <EmployeeProvider employeesData={employees}>
           <body className={montserrat.className}>

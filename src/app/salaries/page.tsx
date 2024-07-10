@@ -15,7 +15,7 @@ export default function Salaries() {
     const editableFields = ['additions', 'deductions'];
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { setEmployees, selectedIds } = useEmployees();
+    const { setEmployees, selectedIds, setSelectedIds } = useEmployees();
     const { setPageTitle } = useGlobal();
     setPageTitle('Salaries')
 
@@ -27,13 +27,8 @@ export default function Salaries() {
               throw new Error('Network response was not ok');
             }
             const data = await response.json();
-            
             setEmployees(data.employees);
-            // setLoading(false);
-            // console.log(typeof employees[0].joiningDate)
           } catch (error) {
-            // setError(error);
-            // setLoading(false);
             console.log('error ocurred')
           }
         }
@@ -43,30 +38,46 @@ export default function Salaries() {
 
       async function saveChanges(item: Employee) {
         console.log('salary info item', item)
-        const response = await fetch(`/api/salaries/${item.staffId}`, {
+        await fetch(`/api/salaries/${item.staffId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(item)
           });
           refreshTable();
-          console.log(response)
-          // TODO: notification if unsuccessful
     }
 
       function refreshTable() {
         setRefreshTrigger(refreshTrigger + 1);
       }
 
-      function handleSalaryProcessing(formData: FormData) {
-        console.log('handling processing for employees with these ids', selectedIds);
+      async function handleSalaryProcessing(formData: FormData) {
+        let salariesToProcess = [];
+        selectedIds.forEach(id => {
+          let salaryMonthYear = formData.get(`${id}-salary-month-year`);
+          if(salaryMonthYear) {
+            salariesToProcess = [...salariesToProcess, {
+              staffId: id,
+              totalSalary: formData.get(`${id}-total-salary`),
+              salaryDate: salaryMonthYear
+            }]
+          }
+        });
+        console.log('handling processing for employees with these ids', salariesToProcess);
+        const response = await fetch(`/api/salaries/payment`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(salariesToProcess)
+        });
+        console.log('response', response)
         setIsModalOpen(false);
+        
       }
 
 
     return (
       <div className="flex flex-col p-4 h-full">
-        <SalaryProcessingModal handleSalaryProcessing={handleSalaryProcessing} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
-        <Button label='Process Salaries' onClick={() => setIsModalOpen(true)}/>
+        <SalaryProcessingModal handleSalaryProcessing={handleSalaryProcessing} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+        <Button label='Process Salaries' onClick={() => setIsModalOpen(true)} isDisabled={selectedIds.length == 0}/>
         <div className="flex-1">
           <Table 
             headers={headers}

@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect, useState } from "react";
 import AddEmployeeModal from "../components/add-employee-modal";
 import { useEmployees } from "../context/employeesContext";
@@ -14,7 +13,7 @@ export default function Employees() {
     const headers = ['Staff Id', 'Name', 'Joining Date', 'Basic Salary', 'Salary Allowances'];
     const editableFields = ['name', 'joiningDate', 'basicSalary', 'salaryAllowances']
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { employees, setEmployees } = useEmployees();
+    const { setEmployees } = useEmployees();
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const { setPageTitle } = useGlobal();
     setPageTitle('Employees');
@@ -94,7 +93,6 @@ export default function Employees() {
             </div>
             <Table 
               headers={headers}
-              content={employees}
               rowHeader={'staffId'}
               editableFields={editableFields}
               refreshTable={refreshTable}

@@ -7,3 +7,9 @@ export type Employee = {
     additions: number;
     deductions: number;
 }
+
+export type SalaryLog = {
+    staffId: number;
+    totalSalary: string;
+    salaryDate: string;
+};

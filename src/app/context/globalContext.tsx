@@ -1,5 +1,7 @@
 'use client';
 import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 type GlobalContextType = {
   pageTitle: string;
@@ -20,8 +22,10 @@ export const GlobalProvider = ({ children }: { children: ReactNode}) => {
   const [pageTitle, setPageTitle] = useState<string>('Dashboard');
 
   return (
-    <GlobalContext.Provider value={{ pageTitle, setPageTitle}}>
-      {children}
-    </GlobalContext.Provider>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <GlobalContext.Provider value={{ pageTitle, setPageTitle}}>
+        {children}
+      </GlobalContext.Provider>
+    </LocalizationProvider>
   );
 };

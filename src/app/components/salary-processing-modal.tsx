@@ -2,6 +2,7 @@
 import { useEmployees } from "@/app/context/employeesContext";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Transition } from '@headlessui/react';
 import { calculateTotalSalary } from "../utils";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 type SalaryProcessingModalProps = {
     isModalOpen: boolean;
@@ -9,7 +10,6 @@ type SalaryProcessingModalProps = {
     handleSalaryProcessing: (formData: FormData) => void;
 }
 
-// TODO: Fix transition
 // TODO: Scrollable
 export default function SalaryProcessingModal(props: SalaryProcessingModalProps) {
     const { isModalOpen, setIsModalOpen } = props;
@@ -36,7 +36,7 @@ export default function SalaryProcessingModal(props: SalaryProcessingModalProps)
                                             <DialogTitle as="h3" className="text-base font-semibold leading-6 text-gray-900">
                                                 Process Salaries
                                             </DialogTitle>
-                                            <div className="grid grid-cols-5 mt-1 w-full gap-x-4">
+                                            <div className="grid grid-cols-5 mt-1 w-full gap-x-4 items-center">
                                                 <div className="mt-2 col-span-5 text-sm font-semibold text-gray-500 mb-4">
                                                     * Employees without a salary month/year will not be processed
                                                 </div>
@@ -47,20 +47,19 @@ export default function SalaryProcessingModal(props: SalaryProcessingModalProps)
 
                                                 {selectedEmployees.map(employee => (
                                                     <>
-                                                        <div className="mt-2 text-sm">
+                                                        <div className="mt-2 text-lg text-gray-500">
                                                             {employee.staffId}
                                                         </div>
                     
-                                                        <div className="mt-2 text-sm">
+                                                        <div className="mt-2 text-lg text-gray-500">
                                                             {employee.name}
                                                         </div>
         
-                                                        <div className="mt-2 text-sm">
-                                                            {calculateTotalSalary(employee)}
-                                                        </div>
+                                                        <input className="mt-2 text-lg text-gray-500 focus:outline-none" name={`${employee.staffId}-total-salary`} value={calculateTotalSalary(employee)} readOnly />
+                                                        
                 
                                                         <div className="mt-2 text-sm col-span-2">
-                                                            Material UI Date Picker
+                                                            <DatePicker name={`${employee.staffId}-salary-month-year`} views={['month', 'year']} />
                                                         </div>
                                                     </>
                                                 ))}
