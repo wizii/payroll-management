@@ -6,6 +6,7 @@ import { Employee } from "../types";
 import Button from "../components/button";
 import SalaryProcessingModal from "../components/salary-processing-modal";
 import { useGlobal } from "../context/globalContext";
+import Link from "next/link";
 
 // TODO: Add salary currency
 // TODO: Add payment status?
@@ -17,7 +18,10 @@ export default function Salaries() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { setEmployees, selectedIds, setSelectedIds } = useEmployees();
     const { setPageTitle } = useGlobal();
-    setPageTitle('Salaries')
+
+    useEffect(() => {
+      setPageTitle('Salaries');
+    }, [setPageTitle]);
 
     useEffect(() => {
         async function fetchEmployees() {
@@ -77,7 +81,16 @@ export default function Salaries() {
     return (
       <div className="flex flex-col p-4 h-full">
         <SalaryProcessingModal handleSalaryProcessing={handleSalaryProcessing} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
-        <Button label='Process Salaries' onClick={() => setIsModalOpen(true)} isDisabled={selectedIds.length == 0}/>
+        <div className="flex justify-end">
+          <Link 
+            href='/'
+            className="text-center bg-white text-[#ff220f] border border-[#ff220f] hover:bg-[#ff220f] hover:text-white hover:border-transparent rounded px-2 py-4 w-1/5 self-end mb-4 hover:shadow-md mr-4"
+          >
+            View Payment History
+          </Link>
+          <Button label='Process Salaries' onClick={() => setIsModalOpen(true)} isDisabled={selectedIds.length == 0}/>
+        </div>
+        
         <div className="flex-1">
           <Table 
             headers={headers}

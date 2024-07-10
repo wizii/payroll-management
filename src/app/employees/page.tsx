@@ -16,9 +16,11 @@ export default function Employees() {
     const { setEmployees } = useEmployees();
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const { setPageTitle } = useGlobal();
-    setPageTitle('Employees');
+
+    useEffect(() => {
+      setPageTitle('Employees');
+    }, [setPageTitle]);
     
-    // TODO: loading state
     useEffect(() => {
         async function fetchEmployees() {
           try {
@@ -27,13 +29,8 @@ export default function Employees() {
               throw new Error('Network response was not ok');
             }
             const data = await response.json();
-            
             setEmployees(data.employees);
-            // setLoading(false);
-            // console.log(typeof employees[0].joiningDate)
           } catch (error) {
-            // setError(error);
-            // setLoading(false);
             console.log('error ocurred')
           }
         }

@@ -1,6 +1,6 @@
 import SideMenuItem from "./side-menu-item";
 
-export default function SideMenu() {
+export default function SideMenu() { 
     return (
         <div className="flex flex-col w-1/4 justify-center p-4 pt-16 h-full text-gray-500">
             <div className="flex flex-col flex-1">

@@ -24,7 +24,6 @@ async function getEmployees() {
   };
 };
 
-// TODO: user provider?
 export default async function RootLayout({
   children,
 }: Readonly<{

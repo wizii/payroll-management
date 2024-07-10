@@ -1,14 +1,11 @@
-import { QueryResultRow, sql } from "@vercel/postgres";
+import { sql, QueryResultRow } from "@vercel/postgres";
 import { v4 as uuidv4 } from 'uuid';
 import type { SalaryLog } from "@/app/types";
 
-// export async function GET() {
-//     const { rows } = await sql`SELECT e.staffid, e.name, e.basicsalary, e.salaryallowances, e.joiningdate,
-//         COALESCE(s.additions, 0) AS additions, COALESCE(s.deductions, 0) AS deductions FROM employee e LEFT JOIN salaryinfo s
-//         ON e.staffid = s.staffid;`;
-//     const serializedEmployees = serializeEmployees(rows);
-//     return Response.json({ employees: serializedEmployees })
-//   }
+export async function GET() {
+    const { rows } = await sql`SELECT * From salarylog`;
+    return Response.json({ salaryLog: deserializeLog(rows) })
+  }
 
 export async function POST(request: Request) {
     try {
@@ -46,4 +43,14 @@ export async function POST(request: Request) {
             status: 500
         });
     }
+}
+
+function deserializeLog(rows: QueryResultRow[]) {
+    return rows.map(row => ({
+        sessionId: row.sessionid,
+        staffId: row.staffid,
+        totalSalary: row.totalsalary,
+        salaryDate: row.salarydate,
+        paymentDate: row.paymentdate
+    }));
 }

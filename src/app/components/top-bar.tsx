@@ -7,7 +7,7 @@ export default function TopBar() {
 
     return (
         <div className="flex h-16 w-full w-full">
-            <div className="self-center flex-1 font-bold text-lg">{pageTitle}</div>
+            <div className="self-center flex-1 font-bold text-">{pageTitle}</div>
             <Image src='/logo.svg' width={415} height={70} alt='Logo'></Image>
         </div>
     )

@@ -6,6 +6,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 type GlobalContextType = {
   pageTitle: string;
   setPageTitle: Dispatch<SetStateAction<string>>;
+  
 };
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);

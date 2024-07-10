@@ -20,4 +20,4 @@ export function calculateTotalSalary(item: Employee) {
       Number(item.additions) -
       Number(item.deductions)
     );
-  };
+};
