@@ -1,18 +1,20 @@
 'use client';
-import { useEffect, useState } from "react";
-import AddEmployeeModal from "../components/add-employee-modal";
-import { useEmployees } from "../context/employeesContext";
-import Table from "../components/table/table";
-import { Employee } from "../types";
-import Button from "../components/button";
-import { useGlobal } from "../context/globalContext";
+import { useEffect, useState } from 'react';
+import AddEmployeeModal from '../components/add-employee-modal';
+import { useEmployees } from '../context/employeesContext';
+import Table from '../components/table/table';
+import { Employee } from '../types';
+import Button from '../components/button';
+import { useGlobal } from '../context/globalContext';
+import DeleteDialog from '../components/delete-dialog';
 
 // TODO: Scrollable-table
-// TODO: Handle empty state
 export default function Employees() {
     const headers = ['Staff Id', 'Name', 'Joining Date', 'Basic Salary', 'Salary Allowances'];
     const editableFields = ['name', 'joiningDate', 'basicSalary', 'salaryAllowances']
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [employeeIdToDelete, setEmployeeIdToDelete] = useState<string | null>(null);
     const { setEmployees } = useEmployees();
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const { setPageTitle } = useGlobal();
@@ -45,7 +47,6 @@ export default function Employees() {
             body: JSON.stringify(item)
           });
           refreshTable();
-          // TODO: notification if unsuccessful
     }
 
       function refreshTable() {
@@ -72,15 +73,20 @@ export default function Employees() {
         }
     }
 
-    // TODO: Add delete warning
-    async function deleteEmployee(id: string) { 
-      const response = await fetch(`/api/employees/${id}`, {
+    function handleDelete(id: string) {
+      setEmployeeIdToDelete(id);
+      setIsDeleteDialogOpen(true);
+    }
+
+    async function deleteEmployee() {
+      const response = await fetch(`/api/employees/${employeeIdToDelete}`, {
         method: 'DELETE'
       });
+      setIsDeleteDialogOpen(false);
       if(response.status == 201) {
         refreshTable();
       }
-      // TODO: notification if failed
+      setEmployeeIdToDelete(null);
     }
     
     return (
@@ -92,12 +98,14 @@ export default function Employees() {
               headers={headers}
               rowHeader={'staffId'}
               editableFields={editableFields}
-              refreshTable={refreshTable}
               saveChanges={saveChanges}
-              handleDelete={deleteEmployee}
+              handleDelete={handleDelete}
             />
             {isModalOpen &&
                 <AddEmployeeModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} addEmployee={addEmployee}></AddEmployeeModal>
+            }
+            {isDeleteDialogOpen && employeeIdToDelete &&
+              <DeleteDialog isDialogOpen={isDeleteDialogOpen} setIsDialogOpen={setIsDeleteDialogOpen} employeeId={employeeIdToDelete} handleDelete={deleteEmployee}/>
             }
         </div>
     )

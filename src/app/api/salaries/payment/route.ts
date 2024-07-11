@@ -7,6 +7,7 @@ export async function GET() {
     return Response.json({ salaryLog: deserializeLog(rows) })
   }
 
+  // TODO: Fix paymentdate
 export async function POST(request: Request) {
     try {
         const sessionId = uuidv4();

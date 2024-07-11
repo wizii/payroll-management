@@ -96,7 +96,6 @@ export default function Salaries() {
             headers={headers}
             rowHeader={'staffId'}
             editableFields={editableFields}
-            refreshTable={refreshTable}
             saveChanges={saveChanges} 
             hasCheckBoxes={true}     
           />

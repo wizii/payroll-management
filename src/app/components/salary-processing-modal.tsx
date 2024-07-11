@@ -36,7 +36,7 @@ export default function SalaryProcessingModal(props: SalaryProcessingModalProps)
                                             <DialogTitle as="h3" className="text-base font-semibold leading-6 text-gray-900">
                                                 Process Salaries
                                             </DialogTitle>
-                                            <div className="grid grid-cols-5 mt-1 w-full gap-x-4 items-center">
+                                            <div className="grid grid-cols-5 mt-1 w-full gap-4 items-center">
                                                 <div className="mt-2 col-span-5 text-sm font-semibold text-gray-500 mb-4">
                                                     * Employees without a salary month/year will not be processed
                                                 </div>
@@ -54,13 +54,16 @@ export default function SalaryProcessingModal(props: SalaryProcessingModalProps)
                                                         <div className="mt-2 text-lg text-gray-500">
                                                             {employee.name}
                                                         </div>
-        
                                                         <input className="mt-2 text-lg text-gray-500 focus:outline-none" name={`${employee.staffId}-total-salary`} value={calculateTotalSalary(employee)} readOnly />
-                                                        
                 
                                                         <div className="mt-2 text-sm col-span-2">
                                                             <DatePicker name={`${employee.staffId}-salary-month-year`} views={['month', 'year']} />
                                                         </div>
+                                                        <div className="col-span-5 border-b-2 flex justify-end">
+                                                            <input className='mr-4' name={`${employee.staffId}-end-of-service`} id={`${employee.staffId}-end-of-service`} type="checkbox"></input>
+                                                            <label htmlFor={`${employee.staffId}-end-of-service`}>End of Service</label>
+                                                        </div>
+                                                        
                                                     </>
                                                 ))}
                             

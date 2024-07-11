@@ -8,17 +8,15 @@ type TableProps = {
     headers: string[];
     editableFields: string[];
     rowHeader: string;
-    refreshTable: () => void;
     saveChanges: (item: Employee) => void;
     handleDelete?: (id: string) => void;
     hasCheckBoxes?: boolean;
 };
 
-// TODO: Fix header gap
 // TODO: Editable Date Field should be a drop down
 // TODO: Select all
 export default function Table(props: TableProps) {
-    const { headers, rowHeader, editableFields, refreshTable, saveChanges, handleDelete, hasCheckBoxes } = props;
+    const { headers, rowHeader, editableFields, saveChanges, handleDelete, hasCheckBoxes } = props;
     const dataFields = headers.map(header => toCamelCase(header));
     const [areAllSelected, setAreAllSelected] = useState(false);
     const { employees, selectedIds, setSelectedIds } = useEmployees();
@@ -43,12 +41,13 @@ export default function Table(props: TableProps) {
               </th>
             }
             {headers.map((header, index) => <th key={index} scope="col" className="px-6 py-3">{header}</th>)}
+            <th scope="col" className="px-6 py-3"></th>
           </tr>
         </thead>
         <tbody>
-            {employees.map((item: Employee, index: number) => (
+            {employees.map((item: Employee) => (
                 <Row 
-                  key={index} 
+                  key={item.staffId} 
                   item={item}
                   rowHeader={rowHeader}
                   dataFields={dataFields}

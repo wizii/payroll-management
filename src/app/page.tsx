@@ -7,6 +7,7 @@ import moment from 'moment';
 // TODO: Dashboard / Payment Log
 // TODO: Check responsiveness
 // TODO: linting/consoles
+// TODO: type dispatches
 export default function Dashboard() {
   const { setPageTitle } = useGlobal();
   const [salaryLog, setSalaryLog] = useState([]);
@@ -64,7 +65,7 @@ export default function Dashboard() {
             ))}
             <div className='flex justify-end w-full mt-4'>
               <Link 
-                href='/'
+                href='/payment-history'
                 className="text-center bg-white text-[#ff220f] border border-[#ff220f] hover:bg-[#ff220f] hover:text-white hover:border-transparent rounded px-2 py-2 w-1/5 self-end mb-4 hover:shadow-md mr-4"
               >
               View All
