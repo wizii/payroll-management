@@ -2,8 +2,8 @@
 import { useEmployees } from "@/app/context/employeesContext";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Transition } from '@headlessui/react';
 import { calculateTotalSalary } from "../utils";
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import React from "react";
+import CustomDatePicker from "./date-picker";
 
 type SalaryProcessingModalProps = {
     isModalOpen: boolean;
@@ -58,7 +58,10 @@ export default function SalaryProcessingModal(props: SalaryProcessingModalProps)
                                                         <input className="mt-2 text-lg text-gray-500 focus:outline-none" name={`${employee.staffId}-total-salary`} value={calculateTotalSalary(employee)} readOnly />
                 
                                                         <div className="mt-2 text-sm col-span-2">
-                                                            <DatePicker name={`${employee.staffId}-salary-month-year`} views={['month', 'year']} />
+                                                            <CustomDatePicker 
+                                                                name={`${employee.staffId}-salary-month-year`} 
+                                                                views={['month', 'year']}
+                                                            />
                                                         </div>
                                                         <div className="col-span-5 border-b-2 flex justify-end">
                                                             <input className='mr-4' name={`${employee.staffId}-end-of-service`} id={`${employee.staffId}-end-of-service`} type="checkbox"></input>

@@ -8,9 +8,24 @@ import Button from '../components/button';
 import { useGlobal } from '../context/globalContext';
 import DeleteDialog from '../components/delete-dialog';
 
-// TODO: Scrollable-table
 export default function Employees() {
-    const headers = ['Staff Id', 'Name', 'Joining Date', 'Basic Salary', 'Salary Allowances'];
+    const headers = ['Staff Id', 'Name', 'Joining Date', 'Basic Salary (AED)', 'Salary Allowances (AED)'];
+    const dataFields = [{
+      name: 'staffId',
+      type: 'text'
+    },{
+      name: 'name',
+      type: 'text'
+    },{
+      name: 'joiningDate',
+      type: 'date'
+    },{
+      name: 'basicSalary',
+      type: 'number'
+    },{
+      name: 'salaryAllowances',
+      type: 'number'
+    }];
     const editableFields = ['name', 'joiningDate', 'basicSalary', 'salaryAllowances']
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -100,6 +115,7 @@ export default function Employees() {
               editableFields={editableFields}
               saveChanges={saveChanges}
               handleDelete={handleDelete}
+              dataFields={dataFields}
             />
             {isModalOpen &&
                 <AddEmployeeModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} addEmployee={addEmployee}></AddEmployeeModal>

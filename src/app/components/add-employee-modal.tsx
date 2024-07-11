@@ -1,6 +1,7 @@
 'use client'
 
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Transition } from '@headlessui/react'
+import CustomDatePicker from './date-picker';
 
 type AddEmployeeModalProps = {
     isModalOpen: boolean;
@@ -8,7 +9,6 @@ type AddEmployeeModalProps = {
     addEmployee: (formData: FormData) => void;
 }
 
-// TODO: Fix transition
 // TODO: Required fields?
 export default function AddEmployeeModal(props: AddEmployeeModalProps) {
   const {isModalOpen, setIsModalOpen} = props;
@@ -49,6 +49,7 @@ export default function AddEmployeeModal(props: AddEmployeeModalProps) {
                                         type="text"
                                         autoComplete="given-name"
                                         className="w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        required
                                     />
                                 </div>
                             </div>
@@ -57,11 +58,10 @@ export default function AddEmployeeModal(props: AddEmployeeModalProps) {
                                     Joining Date
                                 </label>
                                 <div className="mt-2">
-                                    <input
+                                    <CustomDatePicker 
                                         id="joining-date"
                                         name="joining-date"
-                                        type="date"
-                                        className="w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        required
                                     />
                                 </div>
                             </div>
@@ -75,6 +75,7 @@ export default function AddEmployeeModal(props: AddEmployeeModalProps) {
                                         name="basic-salary"
                                         type="text"
                                         className="w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        required
                                     />
                                 </div>
                             </div>
@@ -88,6 +89,7 @@ export default function AddEmployeeModal(props: AddEmployeeModalProps) {
                                         name="salary-allowances"
                                         type="text"
                                         className="w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        required
                                     />
                                 </div>
                             </div>

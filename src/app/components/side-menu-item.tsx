@@ -10,7 +10,6 @@ type SideMenuItemProps = {
     iconPath?: string;
 }
 
-// TODO: icons
 export default function SideMenuItem(props: SideMenuItemProps) {
     const {route, label, iconPath} = props;
     const { pageTitle } = useGlobal();
@@ -23,7 +22,7 @@ export default function SideMenuItem(props: SideMenuItemProps) {
     return (
         <div className="p-2 text-center flex items-center">
             {iconPath &&
-                <div className={`bg-url[${iconPath}`}></div>
+                <div  className="mr-2 w-6 h-6 bg-no-repeat bg-center" style={{ backgroundImage: `url(${iconPath})` }}></div>
             }
             <Link className={`${isActive ? 'text-[#ff220f]' : ''}`} href={route}>{label}</Link>
         </div>

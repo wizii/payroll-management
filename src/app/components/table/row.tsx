@@ -1,11 +1,11 @@
-import { useState } from "react";
-import RowItem from "./row-item";
-import { Employee } from "@/app/types";
-import { calculateTotalSalary } from "@/app/utils";
+import { useState } from 'react';
+import RowItem from './row-item';
+import type { DataField, Employee } from '@/app/types';
+import { calculateTotalSalary } from '@/app/utils';
 
 type RowProps = {
     rowHeader: string;
-    dataFields: string[];
+    dataFields: DataField[];
     item: Employee;
     editableFields: string[];
     saveChanges: (item: Employee) => void;
@@ -21,15 +21,12 @@ export default function Row(props: RowProps) {
     const initialTotalSalary = calculateTotalSalary(item);
     const [rowItem, setRowItem] = useState({...item, totalSalary: initialTotalSalary });
 
-
-
     function handleChange(value: string, name: string) {
         const updatedItem = {
             ...rowItem,
             [name]: value
         }
         setRowItem({...updatedItem, totalSalary: calculateTotalSalary(updatedItem)});
-        console.log(rowItem)
     }
 
     return(
@@ -50,14 +47,15 @@ export default function Row(props: RowProps) {
             >
                 {item[rowHeader]}
             </th>
-                {dataFields.filter(prop => prop !== rowHeader).map((prop, index) => 
+                {dataFields.filter(field => field.name !== rowHeader).map((field, index) => 
                     <RowItem 
                         key={index}
-                        value={rowItem[prop]}
+                        value={rowItem[field.name]}
                         isEditing={isEditing}
-                        isEditable={editableFields.includes(prop)}
-                        name={prop}
+                        isEditable={editableFields.includes(field.name)}
+                        name={field.name}
                         handleChange={handleChange}
+                        type={field.type}
                     />
                 )}
                 <td className="px-6 py-4 text-right">

@@ -12,6 +12,7 @@ export type SalaryLogInput = {
     staffId: number;
     totalSalary: string;
     salaryDate: string;
+    paymentDate: Moment;
 };
 
 export type SalaryLog = {
@@ -27,3 +28,5 @@ export type SessionInfo = {
     totalSalary: number;
     paymentDate: Date;
 };
+
+type DataField = {name: string; type: string;};

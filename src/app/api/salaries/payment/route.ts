@@ -7,7 +7,6 @@ export async function GET() {
     return Response.json({ salaryLogs: deserializeLog(rows) })
   }
 
-  // TODO: Fix paymentdate
 export async function POST(request: Request) {
     try {
         const sessionId = uuidv4();
@@ -20,13 +19,13 @@ export async function POST(request: Request) {
             });
         }
 
-        const values = requestBody.map(({ staffId, totalSalary, salaryDate }) => [
-            sessionId, staffId, totalSalary, salaryDate
+        const values = requestBody.map(({ staffId, totalSalary, salaryDate, paymentDate }) => [
+            sessionId, staffId, totalSalary, salaryDate, paymentDate
         ]);
 
         const query = `
-            INSERT INTO salarylog (sessionid, staffid, totalsalary, salarydate) 
-            VALUES ${values.map((_, i) => `($${i*4+1}, $${i*4+2}, $${i*4+3}, $${i*4+4})`).join(',')}
+            INSERT INTO salarylog (sessionid, staffid, totalsalary, salarydate, paymentdate) 
+            VALUES ${values.map((_, i) => `($${i*5+1}, $${i*5+2}, $${i*5+3}, $${i*5+4}, $${i*5+5})`).join(',')}
         `;
 
         const flattenedValues = values.flat();

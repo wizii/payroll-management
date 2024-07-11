@@ -28,7 +28,7 @@ async function getEmployees() {
 async function getSalaryLogs() {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/salaries/payment`);
   const data: { salaryLogs: SalaryLog[] } = await response.json();
-  console.log(data)
+
   return {
     salaryLogs: data.salaryLogs
   };
