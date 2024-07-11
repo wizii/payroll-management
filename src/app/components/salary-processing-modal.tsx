@@ -3,6 +3,7 @@ import { useEmployees } from "@/app/context/employeesContext";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Transition } from '@headlessui/react';
 import { calculateTotalSalary } from "../utils";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import React from "react";
 
 type SalaryProcessingModalProps = {
     isModalOpen: boolean;
@@ -46,7 +47,7 @@ export default function SalaryProcessingModal(props: SalaryProcessingModalProps)
                                                 <div className="font-semibold text-sm col-span-2">Salary Month/Year</div>
 
                                                 {selectedEmployees.map(employee => (
-                                                    <>
+                                                    <React.Fragment key={employee.staffId}>
                                                         <div className="mt-2 text-lg text-gray-500">
                                                             {employee.staffId}
                                                         </div>
@@ -64,7 +65,7 @@ export default function SalaryProcessingModal(props: SalaryProcessingModalProps)
                                                             <label htmlFor={`${employee.staffId}-end-of-service`}>End of Service</label>
                                                         </div>
                                                         
-                                                    </>
+                                                    </React.Fragment>
                                                 ))}
                             
                                             </div>

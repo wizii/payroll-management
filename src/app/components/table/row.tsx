@@ -12,10 +12,11 @@ type RowProps = {
     handleDelete?: (id: string) => void;
     hasCheckBoxes?: boolean;
     handleSelect: (id: number, checked: boolean) => void;
+    isSelected: boolean;
 }
 
 export default function Row(props: RowProps) {
-    const { rowHeader, item, dataFields, editableFields, saveChanges, handleDelete, hasCheckBoxes, handleSelect } = props;
+    const { rowHeader, item, dataFields, editableFields, saveChanges, handleDelete, hasCheckBoxes, handleSelect, isSelected } = props;
     const [isEditing, setIsEditing]= useState(false);
     const initialTotalSalary = calculateTotalSalary(item);
     const [rowItem, setRowItem] = useState({...item, totalSalary: initialTotalSalary });
@@ -38,7 +39,7 @@ export default function Row(props: RowProps) {
                     <input 
                         type="checkbox" 
                         onChange={(e) => handleSelect(item.staffId, e.target.checked)}
-                        
+                        checked={isSelected}
                     >
                     </input>
                 </td>
