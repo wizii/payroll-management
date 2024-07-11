@@ -1,5 +1,4 @@
 'use client';
-
 import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction, useEffect } from 'react';
 import type { SalaryLog, SessionInfo } from '../types';
 

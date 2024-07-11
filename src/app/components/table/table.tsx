@@ -14,7 +14,6 @@ type TableProps = {
   dataFields: DataField[]
 };
 
-// TODO: Pagination
 export default function Table(props: TableProps) {
   const { headers, rowHeader, editableFields, saveChanges, handleDelete, hasCheckBoxes, dataFields } = props;
   const { employees, selectedIds, setSelectedIds } = useEmployees();

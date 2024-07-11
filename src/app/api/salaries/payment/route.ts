@@ -1,6 +1,6 @@
-import { sql, QueryResultRow } from "@vercel/postgres";
+import { sql, QueryResultRow } from '@vercel/postgres';
 import { v4 as uuidv4 } from 'uuid';
-import type { SalaryLog } from "@/app/types";
+import type { SalaryLog } from '@/app/types';
 
 export async function GET() {
     const { rows } = await sql`SELECT * From salarylog`;

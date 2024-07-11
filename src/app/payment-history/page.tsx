@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect } from 'react';
 import { useGlobal } from '../context/globalContext';
 import { usePayments } from '../context/paymentContext';

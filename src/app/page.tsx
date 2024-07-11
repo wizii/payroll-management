@@ -1,11 +1,10 @@
-'use client'
+'use client';
 import { useEffect, useState } from 'react';
 import { useGlobal } from './context/globalContext';
 import Link from 'next/link';
 import moment from 'moment';
 import { usePayments } from './context/paymentContext';
 
-// TODO: Check responsiveness
 export default function Dashboard() {
   const { setPageTitle } = useGlobal();
   const {sessionInfo} = usePayments();

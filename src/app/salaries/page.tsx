@@ -10,7 +10,6 @@ import Link from 'next/link';
 import moment from 'moment';
 import { usePayments } from '../context/paymentContext';
 
-// TODO: Don't save if no changes
 export default function Salaries() {
     const headers=['Staff Id', 'Name', 'Basic Salary (AED)', 'Salary Allowances (AED)', 'Additions (AED)', 'Deductions (AED)', 'Total Salary (AED)'];
     const editableFields = ['additions', 'deductions'];

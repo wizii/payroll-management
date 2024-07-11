@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Montserrat } from 'next/font/google';
+import './globals.css';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
-import SideMenu from "./components/side-menu";
-import TopBar from "./components/top-bar";
+import SideMenu from './components/side-menu';
+import TopBar from './components/top-bar';
 import { EmployeeProvider } from './context/employeesContext';
 import { GlobalProvider } from './context/globalContext';
-import { PaymentProvider } from "./context/paymentContext";
+import { PaymentProvider } from './context/paymentContext';
 import type { Employee, SalaryLog } from './types';
 
 const montserrat = Montserrat({ subsets: ["latin"] });

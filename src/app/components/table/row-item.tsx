@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import moment from 'moment';
 
 type RowItemProps = {
@@ -6,12 +5,13 @@ type RowItemProps = {
     isEditing: boolean;
     value: string | number;
     name: string;
-    handleChange?: (value: string, name: string) => void; 
+    handleChange?: (value: string, name: string, type: string) => void; 
     type: string;
 }
 
 export default function RowItem(props: RowItemProps) {
     const {isEditable, isEditing, value, handleChange, name, type} = props;
+    const dateFormats = ['DD/MM/YYYY', 'YYYY-MM-DD'];
     
     return (isEditing && isEditable) ?
             <td>
@@ -20,14 +20,12 @@ export default function RowItem(props: RowItemProps) {
                     type={type}
                     value={value}
                     name={name}
-                    onChange={e => handleChange && handleChange(e.target.value, e.target.name)}
+                    onChange={e => handleChange && handleChange(e.target.value, e.target.name, type)}
                 />
             </td> : 
-            (type === 'date' ?
-                <td className="px-6 py-4">{moment(value).format("DD/MM/YYYY")}</td>
-                :
-                <td className="px-6 py-4">{value}</td>
-            )
-
-    
+                    (type === 'date' ?
+                        <td className="px-6 py-4">{moment(value, dateFormats, true).format("DD/MM/YYYY")}</td>
+                        :
+                        <td className="px-6 py-4">{value}</td>
+                    )
 }

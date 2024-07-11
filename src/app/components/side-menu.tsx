@@ -1,4 +1,4 @@
-import SideMenuItem from "./side-menu-item";
+import SideMenuItem from './side-menu-item';
 
 export default function SideMenu() { 
     return (

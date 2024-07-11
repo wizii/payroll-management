@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { usePayments } from '@/app/context/paymentContext';
 import Link from 'next/link';
 import moment from 'moment';

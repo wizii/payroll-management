@@ -1,8 +1,7 @@
-'use client'
+'use client';
 import Link from 'next/link';
-import { useGlobal } from "../context/globalContext";
+import { useGlobal } from '../context/globalContext';
 import { useEffect, useState } from 'react';
-import { dividerClasses } from '@mui/material';
 
 type SideMenuItemProps = {
     label: string;

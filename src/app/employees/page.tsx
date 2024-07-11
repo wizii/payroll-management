@@ -7,6 +7,7 @@ import { Employee } from '../types';
 import Button from '../components/button';
 import { useGlobal } from '../context/globalContext';
 import DeleteDialog from '../components/delete-dialog';
+import moment from 'moment';
 
 export default function Employees() {
     const headers = ['Staff Id', 'Name', 'Joining Date', 'Basic Salary (AED)', 'Salary Allowances (AED)'];

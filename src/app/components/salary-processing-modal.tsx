@@ -1,21 +1,20 @@
-'use client'
-import { useEmployees } from "@/app/context/employeesContext";
+'use client';
+import { useEmployees } from '@/app/context/employeesContext';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Transition } from '@headlessui/react';
-import { calculateTotalSalary } from "../utils";
-import React from "react";
-import CustomDatePicker from "./date-picker";
+import { calculateTotalSalary } from '../utils';
+import React from 'react';
+import CustomDatePicker from './date-picker';
 
 type SalaryProcessingModalProps = {
     isModalOpen: boolean;
     setIsModalOpen: (bool: boolean) => void;
     handleSalaryProcessing: (formData: FormData) => void;
-}
+};
 
-// TODO: Scrollable
 export default function SalaryProcessingModal(props: SalaryProcessingModalProps) {
     const { isModalOpen, setIsModalOpen } = props;
     const { employees, selectedIds } = useEmployees();
-    const selectedEmployees = employees.filter(({staffId}) => selectedIds.includes(staffId));
+    const selectedEmployees = employees.filter(({ staffId }) => selectedIds.includes(staffId));
 
     return (
         <Transition show={isModalOpen}>
@@ -37,43 +36,42 @@ export default function SalaryProcessingModal(props: SalaryProcessingModalProps)
                                             <DialogTitle as="h3" className="text-base font-semibold leading-6 text-gray-900">
                                                 Process Salaries
                                             </DialogTitle>
+                                            <div className="mt-2 col-span-5 text-sm font-semibold text-gray-500 mb-4">
+                                                * Employees without a salary month/year will not be processed
+                                            </div>
                                             <div className="grid grid-cols-5 mt-1 w-full gap-4 items-center">
-                                                <div className="mt-2 col-span-5 text-sm font-semibold text-gray-500 mb-4">
-                                                    * Employees without a salary month/year will not be processed
-                                                </div>
                                                 <div className="font-semibold text-sm">Staff Id</div>
                                                 <div className="font-semibold text-sm">Name</div>
                                                 <div className="font-semibold text-sm">Total Salary</div>
                                                 <div className="font-semibold text-sm col-span-2">Salary Month/Year</div>
-
+                                            </div>
+                                            <div className="max-h-[300px] overflow-y-auto">
                                                 {selectedEmployees.map(employee => (
                                                     <React.Fragment key={employee.staffId}>
-                                                        <div className="mt-2 text-lg text-gray-500">
-                                                            {employee.staffId}
+                                                        <div className="grid grid-cols-5 gap-4 items-center mt-2">
+                                                            <div className="text-gray-500">
+                                                                {employee.staffId}
+                                                            </div>
+                                                            <div className="text-gray-500">
+                                                                {employee.name}
+                                                            </div>
+                                                            <input className="text-gray-500 focus:outline-none" name={`${employee.staffId}-total-salary`} value={calculateTotalSalary(employee)} readOnly />
+                                                            <div className="text-sm col-span-2">
+                                                                <CustomDatePicker
+                                                                    name={`${employee.staffId}-salary-month-year`}
+                                                                    views={['month', 'year']}
+                                                                />
+                                                            </div>
                                                         </div>
-                    
-                                                        <div className="mt-2 text-lg text-gray-500">
-                                                            {employee.name}
-                                                        </div>
-                                                        <input className="mt-2 text-lg text-gray-500 focus:outline-none" name={`${employee.staffId}-total-salary`} value={calculateTotalSalary(employee)} readOnly />
-                
-                                                        <div className="mt-2 text-sm col-span-2">
-                                                            <CustomDatePicker 
-                                                                name={`${employee.staffId}-salary-month-year`} 
-                                                                views={['month', 'year']}
-                                                            />
-                                                        </div>
-                                                        <div className="col-span-5 border-b-2 flex justify-end">
+                                                        <div className="col-span-5 border-b-2 flex justify-end mt-2">
                                                             <input className='mr-4' name={`${employee.staffId}-end-of-service`} id={`${employee.staffId}-end-of-service`} type="checkbox"></input>
                                                             <label htmlFor={`${employee.staffId}-end-of-service`}>End of Service</label>
                                                         </div>
-                                                        
                                                     </React.Fragment>
                                                 ))}
-                            
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>
                                 </div>
                                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                                     <button
