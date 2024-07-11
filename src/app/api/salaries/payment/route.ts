@@ -4,7 +4,7 @@ import type { SalaryLog } from "@/app/types";
 
 export async function GET() {
     const { rows } = await sql`SELECT * From salarylog`;
-    return Response.json({ salaryLog: deserializeLog(rows) })
+    return Response.json({ salaryLogs: deserializeLog(rows) })
   }
 
   // TODO: Fix paymentdate

@@ -83,7 +83,7 @@ export default function Salaries() {
         <SalaryProcessingModal handleSalaryProcessing={handleSalaryProcessing} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
         <div className="flex justify-end">
           <Link 
-            href='/'
+            href='/payment-history'
             className="text-center bg-white text-[#ff220f] border border-[#ff220f] hover:bg-[#ff220f] hover:text-white hover:border-transparent rounded px-2 py-4 w-1/5 self-end mb-4 hover:shadow-md mr-4"
           >
             View Payment History
@@ -95,7 +95,7 @@ export default function Salaries() {
           <Table 
             headers={headers}
             rowHeader={'staffId'}
-            editableFields={editableFields}
+            editableFields={editableFields} 
             saveChanges={saveChanges} 
             hasCheckBoxes={true}     
           />

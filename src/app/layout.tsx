@@ -6,7 +6,8 @@ import SideMenu from "./components/side-menu";
 import TopBar from "./components/top-bar";
 import { EmployeeProvider } from './context/employeesContext';
 import { GlobalProvider } from './context/globalContext';
-import type { Employee } from './types';
+import { PaymentProvider } from "./context/paymentContext";
+import type { Employee, SalaryLog } from './types';
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -24,26 +25,39 @@ async function getEmployees() {
   };
 };
 
+async function getSalaryLogs() {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/salaries/payment`);
+  const data: { salaryLogs: SalaryLog[] } = await response.json();
+  console.log(data)
+  return {
+    salaryLogs: data.salaryLogs
+  };
+}
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const { employees } = await getEmployees();
+  const { salaryLogs } = await getSalaryLogs();
+
   return (
     <html lang="en">
       <UserProvider> 
         <GlobalProvider>
           <EmployeeProvider employeesData={employees}>
-          <body className={montserrat.className}>
-            <main className="flex h-screen p-2">
-              <SideMenu></SideMenu>
-              <div className="flex flex-col w-full divide-y divide-slate-300">
-                <TopBar></TopBar>
-                {children}
-              </div>
-            </main>
-          </body>
+            <PaymentProvider paymentsData={salaryLogs}>
+              <body className={montserrat.className}>
+                <main className="flex h-screen p-2">
+                  <SideMenu></SideMenu>
+                  <div className="flex flex-col w-full divide-y divide-slate-300">
+                    <TopBar></TopBar>
+                    {children}
+                  </div>
+                </main>
+            </body>
+            </PaymentProvider>
           </EmployeeProvider>
         </GlobalProvider>
       </UserProvider>
