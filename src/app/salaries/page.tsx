@@ -60,7 +60,7 @@ export default function Salaries() {
         }
     
         fetchEmployees();
-      }, [refreshTrigger]);
+      }, [refreshTrigger, setEmployees]);
 
       async function saveChanges(item: Employee) {
         await fetch(`/api/salaries/${item.staffId}`, {
