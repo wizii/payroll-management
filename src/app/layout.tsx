@@ -49,9 +49,9 @@ export default async function RootLayout({
           <EmployeeProvider employeesData={employees}>
             <PaymentProvider paymentsData={salaryLogs}>
               <body className={montserrat.className}>
-                <main className="flex h-screen p-2">
+                <main className="flex h-screen w-screen p-2">
                   <SideMenu></SideMenu>
-                  <div className="flex flex-col w-full divide-y divide-slate-300">
+                  <div className="flex flex-col w-3/4 divide-y divide-slate-300">
                     <TopBar></TopBar>
                     {children}
                   </div>

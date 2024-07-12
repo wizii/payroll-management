@@ -7,7 +7,6 @@ import { Employee } from '../types';
 import Button from '../components/button';
 import { useGlobal } from '../context/globalContext';
 import DeleteDialog from '../components/delete-dialog';
-import moment from 'moment';
 
 export default function Employees() {
     const headers = ['Staff Id', 'Name', 'Joining Date', 'Basic Salary (AED)', 'Salary Allowances (AED)'];
@@ -30,7 +29,7 @@ export default function Employees() {
     const editableFields = ['name', 'joiningDate', 'basicSalary', 'salaryAllowances']
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-    const [employeeIdToDelete, setEmployeeIdToDelete] = useState<string | null>(null);
+    const [employeeIdToDelete, setEmployeeIdToDelete] = useState<number | null>(null);
     const { setEmployees } = useEmployees();
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const { setPageTitle } = useGlobal();
@@ -54,7 +53,7 @@ export default function Employees() {
         }
     
         fetchEmployees();
-      }, [refreshTrigger]);
+      }, [refreshTrigger, setEmployees]);
 
       async function saveChanges(item: Employee) {
         const response = await fetch(`/api/employees/${item.staffId}`, {
@@ -89,7 +88,7 @@ export default function Employees() {
         }
     }
 
-    function handleDelete(id: string) {
+    function handleDelete(id: number) {
       setEmployeeIdToDelete(id);
       setIsDeleteDialogOpen(true);
     }
@@ -106,7 +105,7 @@ export default function Employees() {
     }
     
     return (
-          <div className="flex flex-col p-4 h-full">
+          <div className="flex flex-col p-4 h-full w-full">
             <div className="flex justify-end text-[#ff220f]">
               <Button onClick={() => setIsModalOpen(true)} label='Add Employee'/>
             </div>

@@ -10,7 +10,7 @@ type RowProps = {
     item: Employee;
     editableFields: string[];
     saveChanges: (item: Employee) => void;
-    handleDelete?: (id: string) => void;
+    handleDelete?: (id: number) => void;
     hasCheckBoxes?: boolean;
     handleSelect: (id: number, checked: boolean) => void;
     isSelected: boolean;
@@ -44,14 +44,14 @@ export default function Row(props: RowProps) {
             }
             <th
                 scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                className="sm:text-xs md:text-sm sm:px-0.5 md:px-1 lg:px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
             >
-                {item[rowHeader]}
+                {item[rowHeader as keyof Employee]}
             </th>
                 {dataFields.filter(field => field.name !== rowHeader).map((field, index) => 
                     <RowItem 
                         key={index}
-                        value={rowItem[field.name]}
+                        value={rowItem[field.name as keyof Employee]}
                         isEditing={isEditing}
                         isEditable={editableFields.includes(field.name)}
                         name={field.name}
@@ -59,18 +59,18 @@ export default function Row(props: RowProps) {
                         type={field.type}
                     />
                 )}
-                <td className="px-6 py-4 text-right">
+                <td className="px-6 py-4 sm:py-2 sm:px-2 text-right">
                     {isEditing ? 
-                        <button className="font-medium text-gray-600 underline" onClick={() => { saveChanges(rowItem); setIsEditing(false); }}>
+                        <button className="sm:text-xs md:text-sm sm:font-normal md:font-medium text-gray-600 underline" onClick={() => { saveChanges(rowItem); setIsEditing(false); }}>
                             Save
                         </button>
                         :
-                        <button className="font-medium text-gray-600 underline" onClick={() => setIsEditing(true)}>
+                        <button className="sm:text-xs md:text-sm sm:font-normal md:font-medium text-gray-600 underline" onClick={() => setIsEditing(true)}>
                             Edit
                         </button>
                     }
                     {handleDelete &&
-                        <button className="ml-4 font-medium text-gray-600 underline" onClick={() => handleDelete(item.staffId)}>
+                        <button className="ml-4 sm:text-xs md:text-sm sm:font-normal md:font-medium text-gray-600 underline" onClick={() => handleDelete(item.staffId)}>
                             Delete
                         </button> 
                     }

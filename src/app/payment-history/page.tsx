@@ -20,8 +20,8 @@ export default function PaymentHistory() {
                     key={index} 
                     className='cursor-pointer flex justify-around border-l-4 border-cyan-700 p-2 rounded mb-4 shadow-md hover:-translate-y-2'
                 >
-                    <div className='font-semibold'>AED {session.totalSalary}</div>
-                    <div className='text-sm text-gray-500'>Payment Processed on {moment(session.paymentDate).format("MMMM Do YYYY, h:mm a")}</div> 
+                    <div className='font-semibold sm:text-xs md:text-base'>AED {session.totalSalary}</div>
+                    <div className='text-sm text-gray-500 sm:text-xs'>Payment Processed on {moment(session.paymentDate).format("MMMM Do YYYY, h:mm a")}</div> 
                 </Link>
             ))}
         </div>

@@ -7,7 +7,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 type DeleteDialogProps = {
     isDialogOpen: boolean;
     setIsDialogOpen:  Dispatch<SetStateAction<boolean>>;
-    employeeId: string;
+    employeeId: number;
     handleDelete: () => void;
 }
 

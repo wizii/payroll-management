@@ -2,7 +2,7 @@
 
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Transition } from '@headlessui/react';
 import { useState } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import CustomDatePicker from './date-picker';
 
 type AddEmployeeModalProps = {
@@ -99,7 +99,6 @@ export default function AddEmployeeModal(props: AddEmployeeModalProps) {
                           </label>
                           <div className="mt-2">
                             <CustomDatePicker 
-                              id="joining-date"
                               name="joining-date"
                               value={joiningDate}
                               onChange={(date: Dayjs | null) => setJoiningDate(date)}
@@ -115,7 +114,7 @@ export default function AddEmployeeModal(props: AddEmployeeModalProps) {
                             <input
                               id="basic-salary"
                               name="basic-salary"
-                              type="text"
+                              type="number"
                               value={basicSalary}
                               onChange={(e) => setBasicSalary(e.target.value)}
                               className="w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus-ring-1 focus:ring-inset focus:ring-[#ff220f] focus:outline-none sm:text-sm sm:leading-6"
@@ -131,7 +130,7 @@ export default function AddEmployeeModal(props: AddEmployeeModalProps) {
                             <input
                               id="salary-allowances"
                               name="salary-allowances"
-                              type="text"
+                              type="number"
                               value={salaryAllowances}
                               onChange={(e) => setSalaryAllowances(e.target.value)}
                               className="w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus-ring-1 focus:ring-inset focus:ring-[#ff220f] focus:outline-none sm:text-sm sm:leading-6"

@@ -9,7 +9,7 @@ type TableProps = {
   editableFields: string[];
   rowHeader: string;
   saveChanges: (item: Employee) => void;
-  handleDelete?: (id: string) => void;
+  handleDelete?: (id: number) => void;
   hasCheckBoxes?: boolean;
   dataFields: DataField[]
 };
@@ -53,26 +53,26 @@ export default function Table(props: TableProps) {
   return (
     <div className="flex flex-col">
       <input 
-          className="mb-2 w-1/3 h-8 self-end pl-8 bg-[url('/icons/search.svg')] bg-contain bg-no-repeat bg-left-top outline-none rounded-md border text-gray-900 shadow-sm  placeholder:text-gray-400 sm:text-sm sm:leading-6"
+          className="mb-2 sm:w-2/3 xl:w-1/3 h-8 self-end pl-8 bg-[url('/icons/search.svg')] bg-contain bg-no-repeat bg-left-top outline-none rounded-md border text-gray-900 shadow-sm  placeholder:text-gray-400 sm:text-sm sm:leading-6"
           onChange={e => setSearchKey(e.target.value)}
           placeholder="Search for an employee by name or id"
           value={searchKey}
         />
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg max-h-[600px]">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+      <div className="relative shadow-md sm:rounded-lg max-h-[600px]">
+        <table className="lg:w-full lg:text-sm text-left rtl:text-right text-gray-500 over-flow-x-scroll">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 z-10">
             <tr>
               {hasCheckBoxes && (
-                <th scope="col" className="px-6 py-3 text-center">
+                <th scope="col" className="sm:px-0.5 md:px-1 lg:px-2 xl:px-6 py-3 text-center">
                   <input type="checkbox" onChange={(e) => handleSelectAll(e.target.checked)}></input>
                 </th>
               )}
               {headers.map((header, index) => (
-                <th key={index} scope="col" className="px-6 py-3">
+                <th key={index} scope="col" className="sm:px-0.5 md:px-1 lg:px-4 py-3">
                   {header}
                 </th>
               ))}
-              <th scope="col" className="px-6 py-3"></th>
+              <th scope="col" className="sm:px-0.5 md:px-1 lg:px-4 py-4"></th>
             </tr>
           </thead>
           <tbody className="overflow-y-auto max-h-[500px]">

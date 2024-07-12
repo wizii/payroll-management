@@ -24,8 +24,8 @@ export default function RowItem(props: RowItemProps) {
                 />
             </td> : 
                     (type === 'date' ?
-                        <td className="px-6 py-4">{moment(value, dateFormats, true).format("DD/MM/YYYY")}</td>
+                        <td className="sm:px-0.5 sm:text-xs md:text-sm md:px-1 lg:px-6 py-4">{moment(value, dateFormats, true).format("DD/MM/YYYY")}</td>
                         :
-                        <td className="px-6 py-4">{value}</td>
+                        <td className="sm:px-0.5 sm:text-xs md:text-sm md:px-1 lg:px-6 py-4">{value}</td>
                     )
 }

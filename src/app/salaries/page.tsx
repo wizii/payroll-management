@@ -111,7 +111,7 @@ export default function Salaries() {
         <div className="flex justify-end">
           <Link 
             href='/payment-history'
-            className="text-center bg-white text-[#ff220f] border border-[#ff220f] hover:bg-[#ff220f] hover:text-white hover:border-transparent rounded px-2 py-4 w-1/5 self-end mb-4 hover:shadow-md mr-4"
+            className="text-center bg-white text-[#ff220f] border border-[#ff220f] hover:bg-[#ff220f] hover:text-white hover:border-transparent rounded px-2 py-4 lg:w-1/4 md:1/3 sm:w-1/2 self-end mb-4 hover:shadow-md mr-4 text-sm"
           >
             View Payment History
           </Link>
