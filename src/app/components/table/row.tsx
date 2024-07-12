@@ -1,32 +1,26 @@
-import { useState } from "react";
-import RowItem from "./row-item";
-import { Employee } from "@/app/types";
+import { useState } from 'react';
+import RowItem from './row-item';
+import type { DataField, Employee } from '@/app/types';
+import { calculateTotalSalary } from '@/app/utils';
+import moment from 'moment';
 
 type RowProps = {
     rowHeader: string;
-    dataFields: string[];
+    dataFields: DataField[];
     item: Employee;
     editableFields: string[];
     saveChanges: (item: Employee) => void;
-    canDelete?: boolean;
-    handleDelete?: (id: string) => void;
+    handleDelete?: (id: number) => void;
+    hasCheckBoxes?: boolean;
+    handleSelect: (id: number, checked: boolean) => void;
+    isSelected: boolean;
 }
 
 export default function Row(props: RowProps) {
-    const { rowHeader, item, dataFields, editableFields, saveChanges, canDelete, handleDelete } = props;
+    const { rowHeader, item, dataFields, editableFields, saveChanges, handleDelete, hasCheckBoxes, handleSelect, isSelected } = props;
     const [isEditing, setIsEditing]= useState(false);
-    const calculateTotalSalary = (item: Employee) => {
-        return (
-          Number(item.basicSalary) +
-          Number(item.salaryAllowances) +
-          Number(item.additions) -
-          Number(item.deductions)
-        );
-      };
     const initialTotalSalary = calculateTotalSalary(item);
     const [rowItem, setRowItem] = useState({...item, totalSalary: initialTotalSalary });
-
-
 
     function handleChange(value: string, name: string) {
         const updatedItem = {
@@ -38,34 +32,45 @@ export default function Row(props: RowProps) {
 
     return(
         <tr className="bg-white border-b">
+            {hasCheckBoxes && 
+                <td className="text-center">
+                    <input 
+                        type="checkbox" 
+                        onChange={(e) => handleSelect(item.staffId, e.target.checked)}
+                        checked={isSelected}
+                    >
+                    </input>
+                </td>
+            }
             <th
                 scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                className="sm:text-xs md:text-sm sm:px-0.5 md:px-1 lg:px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
             >
-                {item[rowHeader]}
+                {item[rowHeader as keyof Employee]}
             </th>
-                {dataFields.filter(prop => prop !== rowHeader).map((prop, index) => 
+                {dataFields.filter(field => field.name !== rowHeader).map((field, index) => 
                     <RowItem 
                         key={index}
-                        value={rowItem[prop]}
+                        value={rowItem[field.name as keyof Employee]}
                         isEditing={isEditing}
-                        isEditable={editableFields.includes(prop)}
-                        name={prop}
+                        isEditable={editableFields.includes(field.name)}
+                        name={field.name}
                         handleChange={handleChange}
+                        type={field.type}
                     />
                 )}
-                <td className="px-6 py-4 text-right">
+                <td className="px-6 py-4 sm:py-2 sm:px-2 text-right">
                     {isEditing ? 
-                        <button className="font-medium text-gray-600 underline" onClick={() => { saveChanges(rowItem); setIsEditing(false); }}>
+                        <button className="sm:text-xs md:text-sm sm:font-normal md:font-medium text-gray-600 underline" onClick={() => { saveChanges(rowItem); setIsEditing(false); }}>
                             Save
                         </button>
                         :
-                        <button className="font-medium text-gray-600 underline" onClick={() => setIsEditing(true)}>
+                        <button className="sm:text-xs md:text-sm sm:font-normal md:font-medium text-gray-600 underline" onClick={() => setIsEditing(true)}>
                             Edit
                         </button>
                     }
-                    {canDelete && handleDelete &&
-                        <button className="ml-4 font-medium text-gray-600 underline" onClick={() => handleDelete(item.staffId)}>
+                    {handleDelete &&
+                        <button className="ml-4 sm:text-xs md:text-sm sm:font-normal md:font-medium text-gray-600 underline" onClick={() => handleDelete(item.staffId)}>
                             Delete
                         </button> 
                     }

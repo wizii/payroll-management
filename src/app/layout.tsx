@@ -1,11 +1,13 @@
-import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Montserrat } from 'next/font/google';
+import './globals.css';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
-import SideMenu from "./components/side-menu";
-import TopBar from "./components/top-bar";
+import SideMenu from './components/side-menu';
+import TopBar from './components/top-bar';
 import { EmployeeProvider } from './context/employeesContext';
-import type { Employee } from './types';
+import { GlobalProvider } from './context/globalContext';
+import { PaymentProvider } from './context/paymentContext';
+import type { Employee, SalaryLog } from './types';
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -23,27 +25,41 @@ async function getEmployees() {
   };
 };
 
-// TODO: user provider?
+async function getSalaryLogs() {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/salaries/payment`);
+  const data: { salaryLogs: SalaryLog[] } = await response.json();
+
+  return {
+    salaryLogs: data.salaryLogs
+  };
+}
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const { employees } = await getEmployees();
+  const { salaryLogs } = await getSalaryLogs();
+
   return (
     <html lang="en">
-      <UserProvider>
-        <EmployeeProvider employeesData={employees}>
-        <body className={montserrat.className}>
-          <main className="flex h-screen p-2">
-            <SideMenu></SideMenu>
-            <div className="flex flex-col w-full divide-y divide-slate-300">
-              <TopBar></TopBar>
-              {children}
-            </div>
-          </main>
-        </body>
-        </EmployeeProvider>
+      <UserProvider> 
+        <GlobalProvider>
+          <EmployeeProvider employeesData={employees}>
+            <PaymentProvider paymentsData={salaryLogs}>
+              <body className={montserrat.className}>
+                <main className="flex h-screen w-screen p-2">
+                  <SideMenu></SideMenu>
+                  <div className="flex flex-col w-3/4 divide-y divide-slate-300">
+                    <TopBar></TopBar>
+                    {children}
+                  </div>
+                </main>
+            </body>
+            </PaymentProvider>
+          </EmployeeProvider>
+        </GlobalProvider>
       </UserProvider>
     </html>
   );

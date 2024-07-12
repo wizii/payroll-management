@@ -1,21 +1,43 @@
 'use client';
+import { useEffect, useState } from 'react';
+import AddEmployeeModal from '../components/add-employee-modal';
+import { useEmployees } from '../context/employeesContext';
+import Table from '../components/table/table';
+import { Employee } from '../types';
+import Button from '../components/button';
+import { useGlobal } from '../context/globalContext';
+import DeleteDialog from '../components/delete-dialog';
 
-import { useEffect, useState } from "react";
-import AddEmployeeModal from "../components/add-employee-modal";
-import { useEmployees } from "../context/employeesContext";
-import Table from "../components/table/table";
-import { Employee } from "../types";
-
-// TODO: Scrollable-table
-// TODO: Handle empty state
 export default function Employees() {
-    const headers = ['Staff Id', 'Name', 'Joining Date', 'Basic Salary', 'Salary Allowances'];
+    const headers = ['Staff Id', 'Name', 'Joining Date', 'Basic Salary (AED)', 'Salary Allowances (AED)'];
+    const dataFields = [{
+      name: 'staffId',
+      type: 'text'
+    },{
+      name: 'name',
+      type: 'text'
+    },{
+      name: 'joiningDate',
+      type: 'date'
+    },{
+      name: 'basicSalary',
+      type: 'number'
+    },{
+      name: 'salaryAllowances',
+      type: 'number'
+    }];
     const editableFields = ['name', 'joiningDate', 'basicSalary', 'salaryAllowances']
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { employees, setEmployees } = useEmployees();
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [employeeIdToDelete, setEmployeeIdToDelete] = useState<number | null>(null);
+    const { setEmployees } = useEmployees();
     const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const { setPageTitle } = useGlobal();
+
+    useEffect(() => {
+      setPageTitle('Employees');
+    }, [setPageTitle]);
     
-    // TODO: loading state
     useEffect(() => {
         async function fetchEmployees() {
           try {
@@ -24,19 +46,14 @@ export default function Employees() {
               throw new Error('Network response was not ok');
             }
             const data = await response.json();
-            
             setEmployees(data.employees);
-            // setLoading(false);
-            // console.log(typeof employees[0].joiningDate)
           } catch (error) {
-            // setError(error);
-            // setLoading(false);
             console.log('error ocurred')
           }
         }
     
         fetchEmployees();
-      }, [refreshTrigger]);
+      }, [refreshTrigger, setEmployees]);
 
       async function saveChanges(item: Employee) {
         const response = await fetch(`/api/employees/${item.staffId}`, {
@@ -45,7 +62,6 @@ export default function Employees() {
             body: JSON.stringify(item)
           });
           refreshTable();
-          // TODO: notification if unsuccessful
     }
 
       function refreshTable() {
@@ -72,34 +88,40 @@ export default function Employees() {
         }
     }
 
-    // TODO: Add delete warning
-    async function deleteEmployee(id: string) { 
-      const response = await fetch(`/api/employees/${id}`, {
+    function handleDelete(id: number) {
+      setEmployeeIdToDelete(id);
+      setIsDeleteDialogOpen(true);
+    }
+
+    async function deleteEmployee() {
+      const response = await fetch(`/api/employees/${employeeIdToDelete}`, {
         method: 'DELETE'
       });
+      setIsDeleteDialogOpen(false);
       if(response.status == 201) {
         refreshTable();
       }
-      // TODO: notification if failed
+      setEmployeeIdToDelete(null);
     }
     
     return (
-        <div className="flex flex-col">
+          <div className="flex flex-col p-4 h-full w-full">
             <div className="flex justify-end text-[#ff220f]">
-                <button onClick={() => setIsModalOpen(true)}> + Add Employee</button>
+              <Button onClick={() => setIsModalOpen(true)} label='Add Employee'/>
             </div>
             <Table 
               headers={headers}
-              content={employees}
               rowHeader={'staffId'}
               editableFields={editableFields}
-              refreshTable={refreshTable}
               saveChanges={saveChanges}
-              canDelete={true}
-              handleDelete={deleteEmployee}
+              handleDelete={handleDelete}
+              dataFields={dataFields}
             />
             {isModalOpen &&
                 <AddEmployeeModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} addEmployee={addEmployee}></AddEmployeeModal>
+            }
+            {isDeleteDialogOpen && employeeIdToDelete &&
+              <DeleteDialog isDialogOpen={isDeleteDialogOpen} setIsDialogOpen={setIsDeleteDialogOpen} employeeId={employeeIdToDelete} handleDelete={deleteEmployee}/>
             }
         </div>
     )
