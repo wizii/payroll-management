@@ -5,10 +5,6 @@ export default withMiddlewareAuthRequired(async function middleware(request: Nex
   try {
     const appSession = request.cookies.get('appSession')?.value;
 
-    console.log('Middleware executed');
-    console.log('Request URL:', request.url);
-    console.log('App session:', appSession);
-
     if (appSession && !request.nextUrl.pathname.startsWith('/')) {
       return Response.redirect(new URL('/', request.url));
     }
@@ -17,7 +13,6 @@ export default withMiddlewareAuthRequired(async function middleware(request: Nex
       return Response.redirect(new URL('/login', request.url));
     }
 
-    return new Response('Next response');
   } catch (error) {
     console.error('Error in middleware:', error);
     return new Response('Middleware error', { status: 500 });
