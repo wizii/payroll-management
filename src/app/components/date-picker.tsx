@@ -5,7 +5,7 @@ import { Dayjs } from 'dayjs';
 type CustomDatePickerProps = {
     name?: string;
     views?: DateView[];
-    value: Dayjs | null;
+    value?: Dayjs | null;
     onChange?: (date: Dayjs | null) => void;
 };
 
