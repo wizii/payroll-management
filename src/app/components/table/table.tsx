@@ -22,7 +22,7 @@ export default function Table(props: TableProps) {
   
   useEffect(() => {
     setSelectedIds([]);
-  }, []);
+  }, [setSelectedIds]);
 
   useEffect(() => {
     const filtered = employees.filter(employee => 
