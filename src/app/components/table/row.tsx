@@ -2,7 +2,6 @@ import { useState } from 'react';
 import RowItem from './row-item';
 import type { DataField, Employee } from '@/app/types';
 import { calculateTotalSalary } from '@/app/utils';
-import moment from 'moment';
 
 type RowProps = {
     rowHeader: string;
