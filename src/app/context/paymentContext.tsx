@@ -23,31 +23,31 @@ export const PaymentProvider = ({ children, paymentsData }: { children: ReactNod
   const [sessionInfo, setSessionInfo] = useState<SessionInfo[]>([]);
 
   useEffect(() => {
+    function calculateSessionInfo(): SessionInfo[] {
+      const groupedLogs = salaryLogs.reduce((acc: { [key: string]: SalaryLog[] }, item: SalaryLog) => {
+        const { sessionId } = item;
+        if (!acc[sessionId]) {
+          acc[sessionId] = [];
+        }
+        acc[sessionId].push(item);
+        return acc;
+      }, {});
+  
+      return Object.keys(groupedLogs).map(sessionId => {
+        const logs = groupedLogs[sessionId];
+        const totalSalarySum = logs.reduce((sum, log) => sum + Number(log.totalSalary), 0);
+        const paymentDate = logs[0].paymentDate;
+  
+        return {
+          sessionId,
+          totalSalary: totalSalarySum,
+          paymentDate
+        };
+      });
+    }
     setSessionInfo(calculateSessionInfo());
   }, [salaryLogs]);
 
-  function calculateSessionInfo(): SessionInfo[] {
-    const groupedLogs = salaryLogs.reduce((acc: { [key: string]: SalaryLog[] }, item: SalaryLog) => {
-      const { sessionId } = item;
-      if (!acc[sessionId]) {
-        acc[sessionId] = [];
-      }
-      acc[sessionId].push(item);
-      return acc;
-    }, {});
-
-    return Object.keys(groupedLogs).map(sessionId => {
-      const logs = groupedLogs[sessionId];
-      const totalSalarySum = logs.reduce((sum, log) => sum + Number(log.totalSalary), 0);
-      const paymentDate = logs[0].paymentDate;
-
-      return {
-        sessionId,
-        totalSalary: totalSalarySum,
-        paymentDate
-      };
-    });
-  }
 
   return (
     <PaymentContext.Provider value={{ salaryLogs, setSalaryLogs, sessionInfo }}>
