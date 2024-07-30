@@ -13,5 +13,3 @@ pnpm dev
 # or
 bun dev
 ```
-## Notes
-This repo includes the .env.local file to be able to access the auth service and database I used so you can test the app seemlessly.
